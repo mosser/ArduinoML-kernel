@@ -19,3 +19,11 @@ class Actuator(Brick):
         """
 
         Brick.__init__(self, name, pin)
+
+    def setup(self):
+        """
+        Arduino code for the setup of the actuator
+
+        :return: String
+        """
+        return "\tpinMode(%s, OUTPUT);" % self.pin

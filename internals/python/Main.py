@@ -24,8 +24,11 @@ ETEINT = State("ETEINT", None, [SIG_ALLUMER])
 ALLUMER = Transition(BOUTON,SIGNAL.HIGH,ALLUME)
 ETEINDRE = Transition(BOUTON,SIGNAL.LOW,ETEINT)
 
-bricks = {BOUTON.name: BOUTON, LED.name: LED}
-states = {ALLUME.name: ALLUME, ETEINT.name: ETEINT}
+ALLUME.setTransition(ETEINDRE)
+ETEINT.setTransition(ALLUMER)
+
+bricks = [BOUTON, LED]
+states = [ETEINT, ALLUME]
 
 APP = App("MonApplication", states, bricks)
 

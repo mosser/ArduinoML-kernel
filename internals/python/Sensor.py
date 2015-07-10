@@ -18,3 +18,11 @@ class Sensor(Brick):
         :return:
         """
         Brick.__init__(self, name, pin)
+
+    def setup(self):
+        """
+        Arduino code for the setup of the sensor
+
+        :return: String
+        """
+        return "\tpinMode(%s, INPUT);" % self.pin
