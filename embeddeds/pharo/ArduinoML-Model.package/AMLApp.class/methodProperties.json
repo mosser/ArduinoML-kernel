@@ -1,7 +1,9 @@
 {
 	"class" : {
-		"annotation" : "SergeStinckwich 7/10/2015 16:03" },
+		"annotation" : "SergeStinckwich 7/10/2015 17:01:38" },
 	"instance" : {
-		"bricks" : "SergeStinckwich 7/10/2015 16:12",
-		"initialize" : "SergeStinckwich 7/10/2015 17:00",
-		"states" : "SergeStinckwich 7/10/2015 16:13" } }
+		"addBState:" : "SergeStinckwich 7/10/2015 17:29",
+		"addBrick:" : "SergeStinckwich 7/10/2015 17:29",
+		"bricks" : "SergeStinckwich 7/10/2015 17:01:38",
+		"initialize" : "SergeStinckwich 7/10/2015 17:01:38",
+		"states" : "SergeStinckwich 7/10/2015 17:01:38" } }
