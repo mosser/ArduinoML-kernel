@@ -11,5 +11,5 @@
 	"name" : "AMLState",
 	"pools" : [
 		 ],
-	"super" : "MooseEntity",
+	"super" : "AMLEntity",
 	"type" : "normal" }

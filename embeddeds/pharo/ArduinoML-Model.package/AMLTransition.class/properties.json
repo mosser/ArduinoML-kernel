@@ -7,10 +7,10 @@
 	"commentStamp" : "",
 	"instvars" : [
 		"next",
-		"value",
+		"signalValue",
 		"sensor" ],
 	"name" : "AMLTransition",
 	"pools" : [
 		 ],
-	"super" : "MooseEntity",
+	"super" : "AMLEntity",
 	"type" : "normal" }

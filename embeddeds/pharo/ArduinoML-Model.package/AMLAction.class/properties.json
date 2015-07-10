@@ -11,5 +11,5 @@
 	"name" : "AMLAction",
 	"pools" : [
 		 ],
-	"super" : "MooseEntity",
+	"super" : "AMLEntity",
 	"type" : "normal" }

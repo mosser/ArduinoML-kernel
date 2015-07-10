@@ -1,8 +1,8 @@
 {
 	"class" : {
-		 },
+		"annotation" : "SergeStinckwich 7/10/2015 16:03" },
 	"instance" : {
-		"actuator" : "SergeStinckwich 7/10/2015 15:12",
+		"actuator" : "SergeStinckwich 7/10/2015 16:14",
 		"actuator:" : "SergeStinckwich 7/10/2015 15:15",
-		"signalValue" : "SergeStinckwich 7/10/2015 15:14",
-		"signalValue:" : "SergeStinckwich 7/10/2015 15:14" } }
+		"signalValue" : "SergeStinckwich 7/10/2015 16:15",
+		"signalValue:" : "SergeStinckwich 7/10/2015 16:15" } }

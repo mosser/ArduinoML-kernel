@@ -6,10 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"bricks",
-		"states" ],
-	"name" : "AMLApp",
+		 ],
+	"name" : "AMLEntity",
 	"pools" : [
 		 ],
-	"super" : "AMLEntity",
+	"super" : "MooseEntity",
 	"type" : "normal" }
