@@ -1,0 +1,14 @@
+{
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"pin" ],
+	"name" : "AMLBrick",
+	"pools" : [
+		 ],
+	"super" : "MooseEntity",
+	"type" : "normal" }

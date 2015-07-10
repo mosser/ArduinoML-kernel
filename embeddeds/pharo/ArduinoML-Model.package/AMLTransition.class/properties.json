@@ -1,0 +1,16 @@
+{
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"next",
+		"value",
+		"sensor" ],
+	"name" : "AMLTransition",
+	"pools" : [
+		 ],
+	"super" : "MooseEntity",
+	"type" : "normal" }
