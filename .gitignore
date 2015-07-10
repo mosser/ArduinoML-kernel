@@ -1,1 +1,9 @@
 embeddeds/haskell/dist
+
+# Python
+*.py[cod]
+
+# IntelliJ IDEA
+.idea
+
+
