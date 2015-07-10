@@ -14,7 +14,6 @@ class Transition :
         :param nextstate: State, state to change to when the transition is triggered
         :return:
         """
-
         self.sensor = sensor
         self.value = value
         self.nextstate = nextstate
