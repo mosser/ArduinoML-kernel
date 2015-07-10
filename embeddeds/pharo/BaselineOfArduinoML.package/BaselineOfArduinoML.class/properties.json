@@ -1,0 +1,14 @@
+{
+	"category" : "BaselineOfArduinoML",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "SergeStinckwich 7/10/2015 14:18",
+	"instvars" : [
+		 ],
+	"name" : "BaselineOfArduinoML",
+	"pools" : [
+		 ],
+	"super" : "BaselineOf",
+	"type" : "normal" }
