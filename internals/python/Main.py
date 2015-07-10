@@ -6,11 +6,11 @@ no DSL version of the demo application
 
 from Sensor import Sensor
 from Actuator import Actuator
-from State import State
 from Action import Action
+import SIGNAL
+from State import State
 from Transition import Transition
 from App import App
-import SIGNAL
 
 BOUTON = Sensor("BOUTON", 9)
 LED = Actuator("LED", 12)
@@ -21,8 +21,8 @@ SIG_ETEINDRE = Action(SIGNAL.HIGH, LED)
 ALLUME = State("ALLUME", None, [SIG_ETEINDRE])
 ETEINT = State("ETEINT", None, [SIG_ALLUMER])
 
-ALLUMER = Transition(BOUTON,SIGNAL.HIGH,ALLUME)
-ETEINDRE = Transition(BOUTON,SIGNAL.LOW,ETEINT)
+ALLUMER = Transition(BOUTON, SIGNAL.HIGH,ALLUME)
+ETEINDRE = Transition(BOUTON, SIGNAL.LOW,ETEINT)
 
 ALLUME.setTransition(ETEINDRE)
 ETEINT.setTransition(ALLUMER)
