@@ -1,7 +1,6 @@
 __author__ = 'pascalpoizat'
 
-from Brick import Brick
-
+from pyArduinoML.model.Brick import Brick
 
 class Sensor(Brick):
     """
