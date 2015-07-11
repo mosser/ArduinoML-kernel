@@ -31,6 +31,7 @@ For example, let’s consider the following scenario: _“As a user, considering
   * [Pierre-Étienne Moreau](https://sites.google.com/a/depinfonancy.net/pem/)
   * [Sébastien Mosser](http://www.i3s.unice.fr/~mosser)
   * [Pascal Poizat](https://pages.lip6.fr/Pascal.Poizat/)
+  * [Serge Stinckwich](http://www.doesnotunderstand.org/)
   
 ## References
 
