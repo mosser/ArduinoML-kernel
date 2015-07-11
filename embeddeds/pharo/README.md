@@ -18,7 +18,8 @@
 
 ##Install ArduinoML in Pharo 4.0
 
-
+- Install last MOOSE image: http://www.moosetechnology.org/
+- Execute in a PlayGround:
 ```Smalltalk
 Metacello new
     baseline: 'ArduinoML';
