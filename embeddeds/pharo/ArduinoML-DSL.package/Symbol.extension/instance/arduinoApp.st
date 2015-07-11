@@ -1,4 +1,3 @@
 *ArduinoML-DSL
 arduinoApp
-
-^AMLAppBuilder new appName: self
+	^ AMLAppBuilder new appName: self

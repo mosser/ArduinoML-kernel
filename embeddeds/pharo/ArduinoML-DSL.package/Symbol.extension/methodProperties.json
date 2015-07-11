@@ -2,7 +2,8 @@
 	"class" : {
 		 },
 	"instance" : {
-		"actuatorOnPin:" : "SergeStinckwich 7/11/2015 14:57:29",
-		"arduinoApp" : "SergeStinckwich 7/11/2015 15:41",
-		"sensorOnPin:" : "SergeStinckwich 7/11/2015 14:57:29",
-		"stateDo:" : "SergeStinckwich 7/11/2015 15:47" } }
+		"actuatorOnPin:" : "SergeStinckwich 7/11/2015 16:32",
+		"arduinoApp" : "SergeStinckwich 7/11/2015 16:00",
+		"is:" : "SergeStinckwich 7/11/2015 16:12",
+		"sensorOnPin:" : "SergeStinckwich 7/11/2015 16:32",
+		"stateDo:" : "SergeStinckwich 7/11/2015 16:09" } }

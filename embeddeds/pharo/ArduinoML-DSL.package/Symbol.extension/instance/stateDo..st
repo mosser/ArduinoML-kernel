@@ -1,3 +1,5 @@
 *ArduinoML-DSL
-stateDo: aBlock
-
+stateDo: anActionCollection
+	^ AMLState new
+		amlName: self;
+		actions: anActionCollection
