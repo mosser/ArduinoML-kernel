@@ -1,5 +1,5 @@
 tests
-testDSLForStates
+testDSLForTransitions
 	| myApp |
 	myApp := #myApp arduinoApp
 		bricks:
@@ -8,5 +8,9 @@ testDSLForStates
 		states:{
 				#offline stateDo: {#led setTo: #low}.
 					#online stateDo: {#led setTo: #high}};
+		transitions:{
+			#offline to: #online when: (#button is: #high).
+			#online to: #offline when: (#button is: #low).
+		};
 		build.
-	self assert: (myApp states) first actions first actuator class = AMLActuator 
+	self assert: (myApp states) first transition sensor class = AMLSensor
