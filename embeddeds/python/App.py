@@ -39,7 +39,7 @@ class App (NamedElement) :
             rtr = rtr + "\nvoid state_%s() {\n" % state.name
             # generate code for state actions
             for action in state.actions:
-                rtr = rtr + "\tdigitalWrite(%d, %s);\n" % (action.actuator.pin, action.value)
+                rtr = rtr + "\tdigitalWrite(%d, %s);\n" % (action.brick.pin, action.value)
             # generate code for the transition
             transition = state.transition
             rtr += "\tif (digitalRead(%d) == %s) { state_%s(); }\n" \

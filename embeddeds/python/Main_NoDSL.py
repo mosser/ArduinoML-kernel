@@ -12,24 +12,18 @@ from State import State
 from Transition import Transition
 from App import App
 
-BOUTON = Sensor("BOUTON", 9)
-LED = Actuator("LED", 12)
+button = Sensor("button", 9)
+led = Actuator("led", 12)
 
-SIG_ALLUMER = Action(SIGNAL.LOW, LED)
-SIG_ETEINDRE = Action(SIGNAL.HIGH, LED)
+on = State("on", [Action(SIGNAL.HIGH, led)])
+off = State("off", [Action(SIGNAL.LOW, led)])
 
-ALLUME = State("ALLUME", None, [SIG_ETEINDRE])
-ETEINT = State("ETEINT", None, [SIG_ALLUMER])
+switchOn = Transition(button, SIGNAL.HIGH, on)
+switchOff = Transition(button, SIGNAL.LOW, off)
 
-ALLUMER = Transition(BOUTON, SIGNAL.HIGH,ALLUME)
-ETEINDRE = Transition(BOUTON, SIGNAL.LOW,ETEINT)
+on.setTransition(switchOff)
+off.setTransition(switchOn)
 
-ALLUME.setTransition(ETEINDRE)
-ETEINT.setTransition(ALLUMER)
+app = App("MonApplication", [off, on], [button, led])
 
-bricks = [BOUTON, LED]
-states = [ETEINT, ALLUME]
-
-APP = App("MonApplication", states, bricks)
-
-print APP
+print app

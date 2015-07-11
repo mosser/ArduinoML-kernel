@@ -7,14 +7,13 @@ class Action :
 
     """
 
-    def __init__(self, value, actuator) :
+    def __init__(self, value, brick) :
         """
         Constructor.
 
         :param value: SIGNAL, the signal to send
-        :param actuator: Actuator, the actuator to send the signal to
+        :param actuator: Brick, the brick concerned by the action
         :return:
         """
-
         self.value = value
-        self.actuator = actuator
+        self.brick = brick
