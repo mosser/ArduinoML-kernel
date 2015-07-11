@@ -6,7 +6,7 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"name" ],
+		"amlName" ],
 	"name" : "AMLEntity",
 	"pools" : [
 		 ],

@@ -1,0 +1,3 @@
+accessing
+amlName
+	^ amlName
