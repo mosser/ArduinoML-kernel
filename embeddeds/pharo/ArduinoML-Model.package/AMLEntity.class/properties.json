@@ -1,0 +1,14 @@
+{
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"amlName" ],
+	"name" : "AMLEntity",
+	"pools" : [
+		 ],
+	"super" : "MooseEntity",
+	"type" : "normal" }

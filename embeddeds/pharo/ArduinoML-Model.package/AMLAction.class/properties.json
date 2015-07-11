@@ -1,0 +1,15 @@
+{
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"actuator",
+		"signalValue" ],
+	"name" : "AMLAction",
+	"pools" : [
+		 ],
+	"super" : "AMLEntity",
+	"type" : "normal" }

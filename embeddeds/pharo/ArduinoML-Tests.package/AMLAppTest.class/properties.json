@@ -1,0 +1,14 @@
+{
+	"category" : "ArduinoML-Tests",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "AMLAppTest",
+	"pools" : [
+		 ],
+	"super" : "TestCase",
+	"type" : "normal" }

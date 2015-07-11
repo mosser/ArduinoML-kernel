@@ -1,0 +1,10 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"testAddASensorToAnApp" : "SergeStinckwich 7/11/2015 14:56:44",
+		"testAnEmptyAMLAppHasNoBricks" : "SergeStinckwich 7/10/2015 17:01:23",
+		"testAnEmptyAMLAppHasNoStates" : "SergeStinckwich 7/10/2015 17:01:23",
+		"testDSLForBricks" : "SergeStinckwich 7/11/2015 15:36",
+		"testDSLForStates" : "SergeStinckwich 7/11/2015 17:00",
+		"testDSLForTransitions" : "SergeStinckwich 7/11/2015 17:33" } }

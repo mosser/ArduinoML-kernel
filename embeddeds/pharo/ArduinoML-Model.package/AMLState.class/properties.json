@@ -1,0 +1,15 @@
+{
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"actions",
+		"transition" ],
+	"name" : "AMLState",
+	"pools" : [
+		 ],
+	"super" : "AMLEntity",
+	"type" : "normal" }
