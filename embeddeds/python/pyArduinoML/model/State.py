@@ -1,7 +1,6 @@
 __author__ = 'pascalpoizat'
 
-from NamedElement import NamedElement
-
+from pyArduinoML.model.NamedElement import NamedElement
 
 class State(NamedElement):
     """

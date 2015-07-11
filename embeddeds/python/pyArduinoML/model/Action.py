@@ -1,6 +1,5 @@
 __author__ = 'pascalpoizat'
 
-
 class Action :
     """
     An action over a brick, sending a signal to it
