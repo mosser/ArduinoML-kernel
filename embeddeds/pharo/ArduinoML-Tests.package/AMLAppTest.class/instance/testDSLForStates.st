@@ -6,7 +6,7 @@ testDSLForStates
 				{#button sensorOnPin: 9.
 					#led actuatorOnPin: 12};
 		states:{
-				#offline stateDo: [#led is: #low].
-					#online stateDo: [#led is: #high]};
+				#offline stateDo: {#led is: #low}.
+					#online stateDo: {#led is: #high}};
 		build.
-	self assert: myApp bricks size = 2
+	self assert: (myApp states) first actions first actuator class = AMLActuator 
