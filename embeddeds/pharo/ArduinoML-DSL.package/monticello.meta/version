@@ -1,1 +1,2 @@
-(name 'ArduinoML-DSL-SergeStinckwich.1' message 'Start to work on DSL' id '4b6cbe85-1fe4-4e5c-9d7e-bd4408b44d2e' date '11 July 2015' time '2:57:28.457193 pm' author 'SergeStinckwich' ancestors () stepChildren ())
+(name 'ArduinoML-DSL-SergeStinckwich.2' message 'DSL for bricks works now' id '9d3423b7-2b25-4013-9c20-42b6252a6457' date '11 July 2015' time '3:49:29.835319 pm' author 'SergeStinckwich' ancestors ((name 'ArduinoML-DSL-SergeStinckwich.1' message 'Start to work on DSL
+' id '6639c324-b827-5b52-9d9b-965c178188f7' date '11 July 2015' time '2:57:29 pm' author 'SergeStinckwich' ancestors () stepChildren ())) stepChildren ())
