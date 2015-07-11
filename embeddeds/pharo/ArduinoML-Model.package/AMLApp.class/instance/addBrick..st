@@ -1,3 +1,3 @@
 accessing
 addBrick: aBrick
-bricks add: aBrick
+	bricks add: aBrick

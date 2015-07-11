@@ -1,3 +1,3 @@
 accessing
-addBState: aState
+addState: aState
 	states add: aState
