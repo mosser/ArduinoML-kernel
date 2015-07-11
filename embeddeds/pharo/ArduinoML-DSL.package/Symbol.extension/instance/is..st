@@ -1,3 +1,5 @@
 *ArduinoML-DSL
 is: aValue
-	^ (AMLAction new) actuator: self; signalValue: aValue
+	^ AMLTransition new
+		sensor: self;
+		signalValue: aValue
