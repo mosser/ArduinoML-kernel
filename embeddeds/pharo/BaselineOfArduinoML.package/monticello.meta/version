@@ -1,1 +1,2 @@
-(name 'BaselineOfArduinoML-SergeStinckwich.1' message 'First commit' id '3c113a54-a48c-4ad1-9f51-b900c5cdd3d0' date '10 July 2015' time '2:30:02.832014 pm' author 'SergeStinckwich' ancestors () stepChildren ())
+(name 'BaselineOfArduinoML-SergeStinckwich.2' message 'Update baseline' id '54fb5e61-ab97-47a0-a08f-c941e51b0ca9' date '11 July 2015' time '5:46:34.297895 pm' author 'SergeStinckwich' ancestors ((name 'BaselineOfArduinoML-SergeStinckwich.1' message 'First commit
+' id '15f58f89-5571-5c61-9220-746e4ccf06c7' date '10 July 2015' time '2:30:03 pm' author 'SergeStinckwich' ancestors () stepChildren ())) stepChildren ())
