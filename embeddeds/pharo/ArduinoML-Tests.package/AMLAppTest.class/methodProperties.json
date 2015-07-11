@@ -4,4 +4,5 @@
 	"instance" : {
 		"testAddASensorToAnApp" : "SergeStinckwich 7/10/2015 17:30",
 		"testAnEmptyAMLAppHasNoBricks" : "SergeStinckwich 7/10/2015 17:01:23",
-		"testAnEmptyAMLAppHasNoStates" : "SergeStinckwich 7/10/2015 17:01:23" } }
+		"testAnEmptyAMLAppHasNoStates" : "SergeStinckwich 7/10/2015 17:01:23",
+		"testDSLForBricks" : "SergeStinckwich 7/11/2015 14:48" } }
