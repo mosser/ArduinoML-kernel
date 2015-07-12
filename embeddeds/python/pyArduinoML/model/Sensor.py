@@ -24,4 +24,4 @@ class Sensor(Brick):
 
         :return: String
         """
-        return "\tpinMode(%s, INPUT);" % self.pin
+        return "\tpinMode(%s, INPUT);" % self.name
