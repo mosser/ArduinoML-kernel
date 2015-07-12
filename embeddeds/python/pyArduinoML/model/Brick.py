@@ -18,3 +18,11 @@ class Brick(NamedElement):
         """
         NamedElement.__init__(self, name)
         self.pin = pin
+
+    def declare(self):
+        """
+        Arduino code for the declaration of the brick.
+
+        :return: String
+        """
+        return "int %s = %d;" % (self.name, self.pin)

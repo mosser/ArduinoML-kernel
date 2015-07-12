@@ -14,19 +14,19 @@ def demo():
     from pyArduinoML.model.Transition import Transition
     from pyArduinoML.model.SIGNAL import HIGH, LOW
 
-    button = Sensor("button", 9)
-    led = Actuator("led", 12)
+    button = Sensor("BUTTON", 9)
+    led = Actuator("LED", 12)
 
     on = State("on", [Action(HIGH, led)])
     off = State("off", [Action(LOW, led)])
 
     switchon = Transition(button, HIGH, on)
-    switchoff = Transition(button, LOW, off)
+    switchoff = Transition(button, HIGH, off)
 
     on.settransition(switchoff)
     off.settransition(switchon)
 
-    app = App("on-off", [button, led], [off, on])
+    app = App("Switch!", [button, led], [off, on])
 
     print app
 
