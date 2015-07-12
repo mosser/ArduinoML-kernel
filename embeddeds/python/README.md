@@ -52,8 +52,8 @@ The direct use of the model in Python is quite verbose.
 ```python
 [... imports ...]
 
-button = Sensor("button", 9)
-led = Actuator("led", 12)
+button = Sensor("BUTTON", 9)
+led = Actuator("LED", 12)
 
 on = State("on", [Action(HIGH, led)])
 off = State("off", [Action(LOW, led)])
@@ -64,7 +64,7 @@ switchoff = Transition(button, LOW, off)
 on.settransition(switchoff)
 off.settransition(switchon)
 
-app = App("on-off", [button, led], [off, on])
+app = App("Switch!", [button, led], [off, on])
 
 print app
 ```
