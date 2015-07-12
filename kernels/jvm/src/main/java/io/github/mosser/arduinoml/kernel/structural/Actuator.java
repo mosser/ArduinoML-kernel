@@ -1,5 +1,11 @@
 package io.github.mosser.arduinoml.kernel.structural;
 
-public class Actuator extends Sensor {
+import io.github.mosser.arduinoml.kernel.generator.Visitor;
 
+public class Actuator extends Brick {
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
 }
