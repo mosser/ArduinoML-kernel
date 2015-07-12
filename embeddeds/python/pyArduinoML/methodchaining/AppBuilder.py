@@ -62,18 +62,22 @@ class AppBuilder:
         :return: App, the app to be build
         """
         # build the bricks
-        bricks = {}  # Map[String,Brick]
+        bricks = {}  # Map[String, Brick]
         for builder in self.bricks:
             brick = builder.get_contents()
             bricks[brick.name] = brick
         # build the states
-        states = {}  # Map[String,State]
+        states = {} # Map[String, State]
+        # we also use two lists since the ordering is important
+        state_names = [] # List[String]
+        state_values = [] # List[State]
         for builder in self.states:
             state = builder.get_contents(bricks)
             states[state.name] = state
+            state_names += [state.name]
+            state_values += [state]
         # build the transitions (2-step pass due to the meta-model)
         for builder in self.states:
             builder.get_contents2(bricks, states)
         # build the app
-        return App(self.name, bricks.values(), states.values())
-        # TODO correct to support initial state = first in the list
+        return App(self.name, bricks.values(), state_values)
