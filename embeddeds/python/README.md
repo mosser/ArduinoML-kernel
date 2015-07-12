@@ -60,7 +60,7 @@ on = State("on", [Action(HIGH, led)])
 off = State("off", [Action(LOW, led)])
 
 switchon = Transition(button, HIGH, on)
-switchoff = Transition(button, LOW, off)
+switchoff = Transition(button, HIGH, off)
 
 on.settransition(switchoff)
 off.settransition(switchon)
@@ -94,15 +94,15 @@ It is simpler with a DSL based on the [Builder](https://en.wikipedia.org/wiki/Bu
 ```python
 [... imports ...]
 
-app = AppBuilder("on-off") \
-    .sensor("button").on_pin(9) \
-    .actuator("led").on_pin(12) \
+app = AppBuilder("Switch!") \
+    .sensor("BUTTON").on_pin(9) \
+    .actuator("LED").on_pin(12) \
     .state("off") \
-        .set("led").to(LOW) \
-        .when("button").has_value(HIGH).go_to_state("on") \
+        .set("LED").to(LOW) \
+        .when("BUTTON").has_value(HIGH).go_to_state("on") \
     .state("on") \
-        .set("led").to(HIGH) \
-        .when("button").has_value(LOW).go_to_state("off") \
+        .set("LED").to(HIGH) \
+        .when("BUTTON").has_value(HIGH).go_to_state("off") \
     .get_contents()
 
 print app
@@ -114,15 +114,15 @@ A slight variation is to use python `eval` construct to avoid some syntactic sug
 [... imports ...]
 
 app2 = AppStringBuilder("""
-AppBuilder("on-off")
-    .sensor("button").on_pin(9)
-    .actuator("led").on_pin(12)
+AppBuilder("Switch!")
+    .sensor("BUTTON").on_pin(9)
+    .actuator("LED").on_pin(12)
     .state("off")
-        .set("led").to(LOW)
-        .when("button").has_value(HIGH).go_to_state("on")
+        .set("LED").to(LOW)
+        .when("BUTTON").has_value(HIGH).go_to_state("on")
     .state("on")
-        .set("led").to(HIGH)
-        .when("button").has_value(LOW).go_to_state("off")
+        .set("LED").to(HIGH)
+        .when("BUTTON").has_value(HIGH).go_to_state("off")
 """)
 
 print app2
