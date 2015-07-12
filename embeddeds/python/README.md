@@ -1,10 +1,10 @@
 Alternatives:
 
-- [pure python, without DSL](#nodsl) for reference
+- [No DSL](#nodsl) for reference
 
-- [DSL using MethodChaining](#methodchaining)
+- [DSL with MethodChaining](#methodchaining)
  
-## <a name="nodsl">Example in pure python without DSL</a>
+## <a name="nodsl">No DSL</a>
 
 ```python
 [... imports ...]
@@ -43,5 +43,5 @@ In a shell:
 	python -m pyArduinoML.model.Main
 	```
 
-## <a name="methodchaining">Example in python using MethodChaining</a>
+## <a name="methodchaining">DSL with MethodChaining</a>
 
