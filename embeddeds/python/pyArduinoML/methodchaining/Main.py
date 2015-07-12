@@ -7,6 +7,13 @@ uses MethodChaining, nothing Python-specific
 
 
 def demo1():
+    """
+    Direct use of the DSL.
+    + : auto-completion (limited due to python typing system)
+    - : verbose, Python syntax requires '\' to cut lines.
+
+    :return:
+    """
     from pyArduinoML.methodchaining.AppBuilder import AppBuilder
     from pyArduinoML.model.SIGNAL import HIGH, LOW
 
@@ -24,6 +31,13 @@ def demo1():
     print app
 
 def demo2():
+    """
+    Use of a wrapper to avoid some python syntax constraints.
+    + : simpler syntax
+    - : no auto-completion
+
+    :return:
+    """
     from pyArduinoML.methodchaining.AppStringBuilder import AppStringBuilder
 
     app2 = AppStringBuilder("""
