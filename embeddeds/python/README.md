@@ -15,11 +15,11 @@ led = Actuator("led", 12)
 on = State("on", [Action(HIGH, led)])
 off = State("off", [Action(LOW, led)])
 
-switchOn = Transition(button, HIGH, on)
-switchOff = Transition(button, LOW, off)
+switchon = Transition(button, HIGH, on)
+switchoff = Transition(button, LOW, off)
 
-on.setTransition(switchOff)
-off.setTransition(switchOn)
+on.settransition(switchoff)
+off.settransition(switchon)
 
 app = App("on-off", [button, led], [off, on])
 

@@ -6,12 +6,12 @@ class Action :
 
     """
 
-    def __init__(self, value, brick) :
+    def __init__(self, value, brick):
         """
         Constructor.
 
         :param value: SIGNAL, the signal to send
-        :param actuator: Brick, the brick concerned by the action
+        :param brick: Brick, the brick concerned by the action
         :return:
         """
         self.value = value

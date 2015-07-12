@@ -8,7 +8,7 @@ class State(NamedElement):
 
     """
 
-    def __init__(self, name, actions=[], transition=None):
+    def __init__(self, name, actions=(), transition=None):
         """
         Constructor.
 
@@ -21,7 +21,7 @@ class State(NamedElement):
         self.transition = transition
         self.actions = actions
 
-    def setTransition(self, transition):
+    def settransition(self, transition):
         """
         Sets the transition of the state
         :param transition: Transition

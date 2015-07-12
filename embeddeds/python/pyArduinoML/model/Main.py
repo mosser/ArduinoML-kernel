@@ -4,6 +4,7 @@ __author__ = 'pascalpoizat'
 no DSL version of the demo application
 """
 
+
 def demo():
     from pyArduinoML.model.App import App
     from pyArduinoML.model.Action import Action
@@ -19,16 +20,16 @@ def demo():
     on = State("on", [Action(HIGH, led)])
     off = State("off", [Action(LOW, led)])
 
-    switchOn = Transition(button, HIGH, on)
-    switchOff = Transition(button, LOW, off)
+    switchon = Transition(button, HIGH, on)
+    switchoff = Transition(button, LOW, off)
 
-    on.setTransition(switchOff)
-    off.setTransition(switchOn)
+    on.settransition(switchoff)
+    off.settransition(switchon)
 
     app = App("on-off", [button, led], [off, on])
 
     print app
 
+
 if __name__ == '__main__':
     demo()
-
