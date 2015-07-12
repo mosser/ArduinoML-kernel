@@ -26,6 +26,5 @@ class AppStringBuilder:
         from pyArduinoML.model.SIGNAL import HIGH, LOW
         program = " \\\n".join(self.value.split('\n'))
         program += " \\\n" + ".get_contents()"
-        print program
         app = eval(program)
         return app.__repr__()
