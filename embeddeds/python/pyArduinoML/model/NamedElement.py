@@ -1,6 +1,5 @@
 __author__ = 'pascalpoizat'
 
-
 class NamedElement:
     """
     An element with a name.
