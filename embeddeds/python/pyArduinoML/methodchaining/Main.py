@@ -17,15 +17,15 @@ def demo1():
     from pyArduinoML.methodchaining.AppBuilder import AppBuilder
     from pyArduinoML.model.SIGNAL import HIGH, LOW
 
-    app = AppBuilder("on-off") \
-        .sensor("button").on_pin(9) \
-        .actuator("led").on_pin(12) \
+    app = AppBuilder("Switch!") \
+        .sensor("BUTTON").on_pin(9) \
+        .actuator("LED").on_pin(12) \
         .state("off") \
-            .set("led").to(LOW) \
-            .when("button").has_value(HIGH).go_to_state("on") \
+            .set("LED").to(LOW) \
+            .when("BUTTON").has_value(HIGH).go_to_state("on") \
         .state("on") \
-            .set("led").to(HIGH) \
-            .when("button").has_value(LOW).go_to_state("off") \
+            .set("LED").to(HIGH) \
+            .when("BUTTON").has_value(HIGH).go_to_state("off") \
         .get_contents()
 
     print app
@@ -41,15 +41,15 @@ def demo2():
     from pyArduinoML.methodchaining.AppStringBuilder import AppStringBuilder
 
     app2 = AppStringBuilder("""
-    AppBuilder("on-off")
-        .sensor("button").on_pin(9)
-        .actuator("led").on_pin(12)
+    AppBuilder("Switch!")
+        .sensor("BUTTON").on_pin(9)
+        .actuator("LED").on_pin(12)
         .state("off")
-            .set("led").to(LOW)
-            .when("button").has_value(HIGH).go_to_state("on")
+            .set("LED").to(LOW)
+            .when("BUTTON").has_value(HIGH).go_to_state("on")
         .state("on")
-            .set("led").to(HIGH)
-            .when("button").has_value(LOW).go_to_state("off")
+            .set("LED").to(HIGH)
+            .when("BUTTON").has_value(HIGH).go_to_state("off")
     """)
 
     print app2

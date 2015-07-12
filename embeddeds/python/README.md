@@ -1,4 +1,5 @@
-The example we use is the one described [here](https://github.com/mosser/ArduinoML-kernel/blob/master/README.md).
+The example we use is the one described [here](https://github.com/mosser/ArduinoML-kernel/blob/master/README.md)
+and [here](https://github.com/mosser/ArduinoML-kernel/blob/master/docs/README.md)
 
 The resulting Arduino code is:
 
