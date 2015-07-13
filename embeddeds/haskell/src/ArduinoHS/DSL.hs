@@ -73,32 +73,35 @@ toApp n (AppBuilder (Just s) ss mbs) = case M.elems mbs of
 
 addSensor :: S.MonadState AppBuilder m
           => String -> Natural -> m ()
-addSensor name port
-  = S.modify $ over bricks $ M.insert name (A.sensor name port)
+addSensor name port = S.modify $ bricks . L.at name L.?~ A.sensor name port
 
 addActuator :: S.MonadState AppBuilder m
             => String -> Natural -> m ()
-addActuator name port
-  = S.modify $ over bricks $ M.insert name (A.actuator name port)
+addActuator name port = S.modify $ bricks . L.at name L.?~ A.actuator name port
 
 initialState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
              => String -> m ()
 initialState name = do
   s <- S.get
   case view startState s of
-    Nothing -> checkState name s >> S.modify (L.set startState $ Just $ A.State name [] [])
+    Nothing -> do
+      checkState name s
+      startState L..= (Just $ newState name)
     Just _  -> E.throwError $ liftModelError AmbiguousInitialState
 
 defineState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ()
 defineState name = (S.get >>= checkState name) >> S.modify defineStateS
   where
-    defineStateS = over states $ M.insert name (A.State name [] [])
+    defineStateS = states . L.at name L.?~ newState name
+
+newState :: String -> A.State
+newState name = A.State name mempty mempty
 
 set :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
     => String -> m A.Actuator
 set act = do
-  b <- S.gets (view $ bricks . L.to (M.lookup act))
+  b <- S.gets (view $ bricks . L.at act)
   checkBrick b
   where
     checkBrick (Just (A.BrickActuator s)) = return s
@@ -107,9 +110,7 @@ set act = do
 
 when :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
      => String -> m A.Sensor
-when sen = do
-  b <- S.gets (view $ bricks . L.to (M.lookup sen))
-  checkBrick b
+when sen = S.gets (view $ bricks . L.at sen) >>= checkBrick
   where
     checkBrick (Just (A.BrickSensor s)) = return s
     checkBrick Nothing             = E.throwError $ liftRefError $ UnknownBrick sen
@@ -122,7 +123,7 @@ execute :: S.MonadState AppBuilder m
 execute mf as = do
   f <- mf
   as' <- sequence as
-  S.modify $ over (L.sets f . A.actions) (++ as')
+  L.sets f . A.actions L.<>= as'
 
 are :: S.MonadState AppBuilder m
     => m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
@@ -131,7 +132,7 @@ are :: S.MonadState AppBuilder m
 are mf ts = do
   f <- mf
   ts' <- sequence ts
-  S.modify $ over (L.sets f . A.transitions) (++ ts')
+  L.sets f . A.transitions L.<>= ts'
 
 is :: S.MonadState AppBuilder m
    => m A.Sensor -> A.Signal -> m A.State -> m A.Transition
