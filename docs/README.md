@@ -26,26 +26,28 @@ We consider as an illustrating use case the following scenario: _Alice owns a bu
 
 The code necessary to implement this scenario on top of an Arduino micro-controller is the following (see [Arduino tutorials](https://www.arduino.cc/en/Tutorial/Blink) for more details)
 
-    int BUTTON = 9;
-    int LED = 12;
-    
-    void setup() {
-      pinMode(BUTTON, INPUT);
-      pinMode(LED,    OUTPUT);
-    }
-    
-    int state = LOW; int prev = HIGH;
-    long time = 0; long debounce = 200;
-    
-    void loop() {
-      int reading = digitalRead(BUTTON);
-      if (reading == HIGH && prev == LOW && millis() - time > debounce) { 
-        if (state == HIGH) { state = LOW; } else { state = HIGH; } 
-        time = millis();
-      }
-      digitalWrite(LED, state); 
-      prev = reading;
-    }
+```Arduino
+int BUTTON = 9;
+int LED = 12;
+
+void setup() {
+  pinMode(BUTTON, INPUT);
+  pinMode(LED,    OUTPUT);
+}
+
+int state = LOW; int prev = HIGH;
+long time = 0; long debounce = 200;
+
+void loop() {
+  int reading = digitalRead(BUTTON);
+  if (reading == HIGH && prev == LOW && millis() - time > debounce) { 
+    if (state == HIGH) { state = LOW; } else { state = HIGH; } 
+    time = millis();
+  }
+  digitalWrite(LED, state); 
+  prev = reading;
+}
+```
 
 ## Abstract Syntax / Meta-model
 
@@ -87,11 +89,12 @@ Based on a model conform to the previously described meta-model, one can expect 
 
 Using the Wiring library, the structural part of the meta-model is mapped to the implementation of the `setup()` function. Here is an example of the code to generate:
 
-    void setup() {
-      pinMode( 9, INPUT);  // Sensor [button] is defined as an INPUT
-      pinMode(12, OUTPUT); // Actuator [led] is defined as an OUTPUT
-    }
-
+```Arduino
+void setup() {
+  pinMode( 9, INPUT);  // Sensor [button] is defined as an INPUT
+  pinMode(12, OUTPUT); // Actuator [led] is defined as an OUTPUT
+}
+```
 
 ### Behavioral concerns
 
@@ -99,28 +102,30 @@ To reify the states in the code, one can use functions. Each state is implemente
 
 For the code to run smoothly on the micro-controller, it is important to include a debouncing mechanisms in the transition. A transition will then be triggered if and only if another transition wasn't triggered in the last 200ms. This simple safety mechanism ensures that the transition system is compatible with human reaction time.
 
-    // Behavioral concepts
-    long time = 0; long debounce = 200;
-    
-    void state_on() { 
-      digitalWrite(12, HIGH);
-      boolean guard =  millis() - time > debounce;  
-      if (digitalRead(9) == HIGH  && guard ) { 
-        time = millis(); state_off(); 
-      } else { 
-        state_on(); 
-      }
-    }
-    
-    void state_off() {
-      digitalWrite(12, LOW);
-      boolean guard =  millis() - time > debounce;   
-      if (digitalRead(9) == HIGH  && guard) { 
-        time = millis(); state_on(); 
-      } else { 
-        state_off(); 
-      }
-    }
-    
-    void loop() { state_off(); }
+```Arduino
+long time = 0; long debounce = 200;             // Debouncing mechanism initialisation
+
+void state_on() {                               // state "on"
+  digitalWrite(12, HIGH);                       // action: switching the led on
+  boolean guard =  millis() - time > debounce;  // debounce guard
+  if (digitalRead(9) == HIGH  && guard ) {      // Go to next state if button pressed AND debounce OK
+    time = millis();                            // update the debounce timer
+    state_off();                                // transition from "on" to "off"
+  } else { 
+    state_on();                                 // stay in the very same state
+  }
+}
+
+void state_off() {
+  digitalWrite(12, LOW);                        // action: switching the led off
+  boolean guard =  millis() - time > debounce;   
+  if (digitalRead(9) == HIGH  && guard) { 
+    time = millis(); 
+    state_on(); 
+  } else { 
+    state_off(); 
+  }
+}
+
+void loop() { state_off(); }                    // Jumping into the initial state
 
