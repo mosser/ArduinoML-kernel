@@ -1,5 +1,7 @@
-{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE ImpredicativeTypes  #-}
+{-# LANGUAGE TemplateHaskell     #-}
 
 {- |
 Module: Arduino.DSL
@@ -13,6 +15,7 @@ module ArduinoHS.DSL
   ( -- * Execute an App plan to build an App
     buildApp
   -- * state definition
+  , initialState
   , defineState
   -- * brick definition
   , addSensor
@@ -29,105 +32,184 @@ module ArduinoHS.DSL
   , when
   , is
   , goto
+  -- * model creation error
+  , DSLError
+  , InvalidModel (..)
+  , InvalidRef (..)
   ) where
 
-import           Control.Lens (view, over)
+import           Control.Applicative
+import           Control.Lens (view, views, over)
 import qualified Control.Lens         as L
-import           Control.Monad (join)
+import           Control.Monad (join, mfilter)
 import qualified Control.Monad.State  as S
 import qualified Control.Monad.Except as E
 
+import qualified Data.Bifunctor       as B
 import qualified Data.Map             as M
+import qualified Data.List.NonEmpty   as NE
 
 import           Numeric.Natural
 
-import           ArduinoHS.Model
+import qualified ArduinoHS.Model      as A
 
-addSensor :: S.MonadState App m
+data AppBuilder
+  = AppBuilder
+  { _startState :: Maybe A.State
+  , _states :: M.Map String A.State
+  , _bricks :: M.Map String A.Brick
+  } deriving (Eq, Read, Show)
+
+L.makeLenses ''AppBuilder
+
+emptyBuilder :: AppBuilder
+emptyBuilder = AppBuilder Nothing mempty mempty
+
+toApp :: String -> AppBuilder -> Either InvalidModel A.App
+toApp _ (AppBuilder Nothing _ _) = Left NoInitialState
+toApp n (AppBuilder (Just s) ss mbs) = case M.elems mbs of
+  (b:bs) -> Right $ A.App n s (M.elems ss) (b NE.:| bs)
+  _      -> Left NoBrick
+
+addSensor :: S.MonadState AppBuilder m
           => String -> Natural -> m ()
-addSensor name port
-  = S.modify $ over bricks $ M.insert name (sensor name port)
+addSensor name port = bricks . L.at name L.?= A.sensor name port
 
-addActuator :: S.MonadState App m
+addActuator :: S.MonadState AppBuilder m
             => String -> Natural -> m ()
-addActuator name port
-  = S.modify $ over bricks $ M.insert name (actuator name port)
+addActuator name port = bricks . L.at name L.?= A.actuator name port
 
-defineState :: S.MonadState App m
+initialState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+             => String -> m ()
+initialState name = do
+  s <- S.get
+  case view startState s of
+    Nothing -> do
+      checkState name s
+      startState L..= (Just $ newState name)
+    Just _  -> E.throwError $ liftModelError AmbiguousInitialState
+
+defineState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ()
-defineState name = S.modify defineStateS
+defineState name = (S.get >>= checkState name) >> defineStateS
   where
-    defineStateS = over states $ M.insert name (State name [] [])
+    defineStateS = states . L.at name L.?= newState name
 
-set :: (S.MonadState App m, E.MonadError InvalidRef m)
-    => String -> m Actuator
+newState :: String -> A.State
+newState name = A.State name mempty mempty
+
+set :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+    => String -> m A.Actuator
 set act = do
-  b <- S.gets (view $ bricks . L.to (M.lookup act))
+  b <- S.gets (view $ bricks . L.at act)
   checkBrick b
   where
-    checkBrick (Just (BrickActuator s)) = return s
-    checkBrick Nothing             = E.throwError $ UnknownBrick act
-    checkBrick _                   = E.throwError $ WrongBrickType act
+    checkBrick (Just (A.BrickActuator s)) = return s
+    checkBrick Nothing = E.throwError $ liftRefError $ UnknownBrick act
+    checkBrick _       = E.throwError $ liftRefError $ WrongBrickType act
 
-when :: (S.MonadState App m, E.MonadError InvalidRef m)
-     => String -> m Sensor
-when sen = do
-  b <- S.gets (view $ bricks . L.to (M.lookup sen))
-  checkBrick b
+when :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+     => String -> m A.Sensor
+when sen = S.gets (view $ bricks . L.at sen) >>= checkBrick
   where
-    checkBrick (Just (BrickSensor s)) = return s
-    checkBrick Nothing             = E.throwError $ UnknownBrick sen
-    checkBrick _                   = E.throwError $ WrongBrickType sen
+    checkBrick (Just (A.BrickSensor s)) = return s
+    checkBrick Nothing             = E.throwError $ liftRefError $ UnknownBrick sen
+    checkBrick _                   = E.throwError $ liftRefError $ WrongBrickType sen
 
-execute :: (S.MonadState App m, E.MonadError InvalidRef m)
-        => m State -> [m Action] -> m ()
-execute state as = do
+execute :: S.MonadState AppBuilder m
+        => m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
+        -> [m A.Action]
+        -> m ()
+execute mf as = do
+  f <- mf
   as' <- sequence as
-  state' <- over actions (++ as') <$> state
-  S.modify $ over states (join (M.insert . view stateName) state')
+  L.sets f . A.actions L.<>= as'
 
-
-are :: (S.MonadState App m, E.MonadError InvalidRef m)
-    => m State -> [m Transition] -> m ()
-are state ts = do
+are :: S.MonadState AppBuilder m
+    => m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
+    -> [m A.Transition]
+    -> m ()
+are mf ts = do
+  f <- mf
   ts' <- sequence ts
-  state' <- over transitions (++ ts') <$> state
-  S.modify $ over states (join (M.insert . view stateName) state')
+  L.sets f . A.transitions L.<>= ts'
 
-goto :: (S.MonadState App m, E.MonadError InvalidRef m)
-     => String -> m State
-goto = resolveState
+is :: S.MonadState AppBuilder m
+   => m A.Sensor -> A.Signal -> m A.State -> m A.Transition
+is sen sig st = A.Transition <$> pure sig <*> sen <*> st
 
-is :: (S.MonadState App m, E.MonadError InvalidRef m)
-   => m Sensor -> Signal -> m State -> m Transition
-is sen sig st = Transition <$> pure sig <*> sen <*> st
+to :: S.MonadState AppBuilder m => m A.Actuator -> A.Signal -> m A.Action
+to act sig = A.Action <$> pure sig <*> act
 
-to :: (S.MonadState App m, E.MonadError InvalidRef m)
-   => m Actuator -> Signal -> m Action
-to act sig = Action <$> pure sig <*> act
+goto :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+     => String -> m A.State
+goto name = do
+  s <- S.gets $ liftA2 (<|>) checkStates checkInitialState
+  maybe (E.throwError $ liftRefError $ UnknownState name) return s
+    where
+      checkStates = view $ states . L.to (M.lookup name)
+      checkInitialState = views startState $ mfilter (views A.stateName (== name))
 
-actionsWhen :: (S.MonadState App m, E.MonadError InvalidRef m)
-     => String -> m State
+actionsWhen :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+            => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
 actionsWhen = resolveState
 
-transitionsFrom :: (S.MonadState App m, E.MonadError InvalidRef m)
-     => String -> m State
+transitionsFrom :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+                => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
 transitionsFrom = resolveState
 
-resolveState :: (S.MonadState App m, E.MonadError InvalidRef m)
-     => String -> m State
+checkState :: E.MonadError DSLError m
+           => String -> AppBuilder -> m ()
+checkState name = maybe (return ()) (const err) . nameExists
+  where
+    err = E.throwError . liftModelError $ AmbiguousState name
+    nameExists = L.preview (L.folded . L.only name) . statesName
+
+resolveState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+             => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
 resolveState name = do
-  s <- S.gets (view $ states . L.to (M.lookup name))
-  maybe (E.throwError $ UnknownState name) return s
+  s <- S.gets $ liftA2 (<|>) checkInitialState checkStates
+  maybe (E.throwError $ liftRefError $ UnknownState name) return s
+    where
+      checkStates a = do
+        _ <- L.view (states . L.at name) a
+        return $ over (states . L.at name . L._Just)
+      checkInitialState a = do
+        _ <- L.preview (startState . L._Just . A.stateName . L.only name) a
+        return $ over (startState . L._Just)
+
 
 onPort :: Natural -> Natural
 onPort = id
 
 
 buildApp :: String
-         -> S.StateT App (Either InvalidRef) ()
-         -> Either InvalidRef App
-buildApp name = flip S.execStateT (App name mempty mempty)
+         -> S.StateT AppBuilder (Either DSLError) ()
+         -> Either DSLError A.App
+buildApp name plan = do
+  builder <- S.execStateT plan emptyBuilder
+  B.first liftModelError $ toApp name builder
+
+statesName :: AppBuilder -> [String]
+statesName = liftA2 (maybe id (:)) initialStateName otherStatesName
+ where
+   initialStateName = L.preview (startState . L._Just . A.stateName)
+   otherStatesName = views states M.keys
+
+type DSLError = Either InvalidModel InvalidRef
+
+liftModelError :: InvalidModel -> DSLError
+liftModelError = Left
+
+liftRefError :: InvalidRef -> DSLError
+liftRefError = Right
+
+data InvalidModel
+  = NoInitialState
+  | NoBrick
+  | AmbiguousInitialState
+  | AmbiguousState String
+  deriving (Eq, Show, Read)
 
 data InvalidRef
   = UnknownState String

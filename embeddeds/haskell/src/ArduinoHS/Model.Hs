@@ -24,6 +24,7 @@ module ArduinoHS.Model (
   , actuator -- ^ create an actuator brick more easily
     -- * Lenses
   , appName -- ^ Name of an app
+  , initialState -- ^ The initialState of the app
   , states  -- ^ The states of an app
   , bricks  -- ^ The bricks of an app
   , stateName -- ^ Name of a state
@@ -36,26 +37,29 @@ module ArduinoHS.Model (
   , next -- ^ the state targeted by the transition
   , brickName -- ^ name of a brick
   , brickPort -- ^ port of a brick
+  , actuatorName -- ^ name of an actuator
+  , sensorName -- ^ name of a sensor
   ) where
 
 import Control.Applicative
-import Control.Lens (makeLenses, makePrisms, Lens', lens, view, views, has, _Right)
+import Control.Lens (makeLenses, makePrisms, Lens', lens, view, views, has, _Right, set)
 
-import qualified Data.Map as M
+import qualified Data.List.NonEmpty as NE
 
 import Numeric.Natural
 
 data App
   = App
-  { _appName :: String
-  , _states :: M.Map String State
-  , _bricks :: M.Map String Brick
+  { _appName      :: String
+  , _initialState :: State
+  , _states       :: [State]
+  , _bricks       :: NE.NonEmpty Brick
   } deriving (Eq, Show, Read)
 
 data State
   = State
-  { _stateName :: String
-  , _actions :: [Action]
+  { _stateName   :: String
+  , _actions     :: [Action]
   , _transitions :: [Transition]
   } deriving (Eq, Show, Read)
 
@@ -105,15 +109,25 @@ makeLenses ''Transition
 
 makePrisms ''Brick
 
+actuatorName :: Lens' Actuator String
+actuatorName = lens getter setter
+ where
+   getter (Actuator (BrickLegacy n _)) = n
+   setter (Actuator (BrickLegacy _ p)) n = Actuator $ BrickLegacy n p
+
+sensorName :: Lens' Sensor String
+sensorName = lens getter setter
+ where
+   getter (Sensor (BrickLegacy n _)) = n
+   setter (Sensor (BrickLegacy _ p)) n = Sensor $ BrickLegacy n p
+
 brickName :: Lens' Brick String
 brickName = lens getter setter
   where
-    getter (BrickSensor   (Sensor   (BrickLegacy n _))) = n
-    getter (BrickActuator (Actuator (BrickLegacy n _))) = n
-    setter (BrickSensor   (Sensor   (BrickLegacy _ p))) n
-      = BrickSensor   (Sensor   (BrickLegacy n p))
-    setter (BrickActuator (Actuator (BrickLegacy _ p))) n
-      = BrickActuator (Actuator (BrickLegacy n p))
+    getter (BrickSensor   s) = view sensorName s
+    getter (BrickActuator a) = view actuatorName a
+    setter (BrickSensor   s) n = BrickSensor   $ set sensorName n s
+    setter (BrickActuator a) n = BrickActuator $ set actuatorName n a
 
 brickPort :: Lens' Brick Natural
 brickPort = lens getter setter

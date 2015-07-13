@@ -27,10 +27,10 @@ released :: Signal
 released = Low
 
 main :: IO ()
-main = print $ buildApp "example" $ do
+main = either print (print . generate) $ buildApp "example" $ do
   addSensor button $ onPort 9
   addActuator light $ onPort 12
-  defineState offline
+  initialState offline
   defineState online
   actionsWhen offline `execute` [ set light `to` off ]
   actionsWhen online  `execute` [ set light `to` on ]
