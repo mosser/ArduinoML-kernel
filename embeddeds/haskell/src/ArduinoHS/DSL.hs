@@ -73,11 +73,11 @@ toApp n (AppBuilder (Just s) ss mbs) = case M.elems mbs of
 
 addSensor :: S.MonadState AppBuilder m
           => String -> Natural -> m ()
-addSensor name port = S.modify $ bricks . L.at name L.?~ A.sensor name port
+addSensor name port = bricks . L.at name L.?= A.sensor name port
 
 addActuator :: S.MonadState AppBuilder m
             => String -> Natural -> m ()
-addActuator name port = S.modify $ bricks . L.at name L.?~ A.actuator name port
+addActuator name port = bricks . L.at name L.?= A.actuator name port
 
 initialState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
              => String -> m ()
@@ -91,9 +91,9 @@ initialState name = do
 
 defineState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ()
-defineState name = (S.get >>= checkState name) >> S.modify defineStateS
+defineState name = (S.get >>= checkState name) >> defineStateS
   where
-    defineStateS = states . L.at name L.?~ newState name
+    defineStateS = states . L.at name L.?= newState name
 
 newState :: String -> A.State
 newState name = A.State name mempty mempty
