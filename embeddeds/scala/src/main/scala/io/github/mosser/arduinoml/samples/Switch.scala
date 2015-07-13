@@ -1,16 +1,8 @@
-# ArduinoML implementation using Scala
+package io.github.mosser.arduinoml.samples
 
-This project is a quick and dirty implementation of the ArduinoML language using Scala as an host language.
+import io.github.mosser.arduinoml.dsl.ArduinoML
 
-## Intentions
 
-  * loading the DSL should be as easy as mixing a trait
-  * we create apps one at a time
-  * compatible with classical code completion from the IDE
-
-## Syntax example
-
-```Scala
 object Switch extends App with ArduinoML {
 
   this hasForName "Switch!"
@@ -36,10 +28,4 @@ object Switch extends App with ArduinoML {
   exportToWiring
 
 }
-```
 
-## Todo list
-
-  * implements checkers in the DSL to verify what we are building
-  * update documentation
-  * implement more examples
