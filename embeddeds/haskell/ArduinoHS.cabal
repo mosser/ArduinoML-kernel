@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                ArduinoHS
-version:             0.2.0.0
+version:             0.3.0.0
 synopsis:            ArduinoML implementation in Haskell
 -- description:         
 homepage:            https://github.com/mosser/ArduinoML-kernel
@@ -20,12 +20,15 @@ library
   exposed-modules:     ArduinoHS
   other-modules:       ArduinoHS.Model
   other-modules:       ArduinoHS.DSL
-  -- other-extensions:    
+               ,       ArduinoHS.CodeGen
   build-depends:       base >=4.8 && <4.9
+               ,       bifunctors
                ,       containers
                ,       free
                ,       lens
                ,       mtl
                ,       nats
+               ,       semigroups
+               ,       text
   hs-source-dirs:      src
   default-language:    Haskell2010
