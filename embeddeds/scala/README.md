@@ -37,6 +37,14 @@ object Switch extends App with ArduinoML {
 
 }
 ```
+## Requirements
+
+  * the project is delivered as a maven 3 artefact
+  * The code relies on the [JVM kernel](https://github.com/mosser/ArduinoML-kernel/tree/master/kernels/jvm) defined in this repository 
+    * `mvn install` it before compiling or running this example
+  * The code can be compiled using `mvn clean package`
+  * To run the Switch example:
+    * ` mvn -q scala:run -DmainClass=io.github.mosser.arduinoml.samples.Switch`
 
 ## Todo list
 
