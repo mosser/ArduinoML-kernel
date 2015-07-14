@@ -43,8 +43,7 @@ behaviouralConcepts =
 generateBricksDecl :: [Brick] -> T.Text
 generateBricksDecl = T.intercalate "\n" . map generateBrickDecl
   where
-    generateBrickDecl
-      = T.pack . liftA2 (printf "int %s = %d;") (view brickName) (view brickPort)
+    generateBrickDecl = T.pack . liftA2 (printf "int %s = %d;") (view brickName) (view brickPort)
 
 generateSetup :: [Brick] -> T.Text
 generateSetup =

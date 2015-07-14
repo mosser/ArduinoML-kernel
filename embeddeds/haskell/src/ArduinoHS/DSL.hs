@@ -17,10 +17,11 @@ module ArduinoHS.DSL
   -- * state definition
   , initialState
   , defineState
+  , defineStates
   -- * brick definition
   , addSensor
   , addActuator
-  , onPort
+  , onPin
   -- * action definition
   , actionsWhen
   , execute
@@ -45,7 +46,7 @@ import           Control.Monad (join, mfilter)
 import qualified Control.Monad.State  as S
 import qualified Control.Monad.Except as E
 
-import qualified Data.Bifunctor       as B
+import qualified Data.Foldable        as F
 import qualified Data.Map             as M
 import qualified Data.List.NonEmpty   as NE
 
@@ -55,7 +56,7 @@ import qualified ArduinoHS.Model      as A
 
 data AppBuilder
   = AppBuilder
-  { _startState :: Maybe A.State
+  { _startStateName :: Maybe String
   , _states :: M.Map String A.State
   , _bricks :: M.Map String A.Brick
   } deriving (Eq, Read, Show)
@@ -65,11 +66,16 @@ L.makeLenses ''AppBuilder
 emptyBuilder :: AppBuilder
 emptyBuilder = AppBuilder Nothing mempty mempty
 
-toApp :: String -> AppBuilder -> Either InvalidModel A.App
-toApp _ (AppBuilder Nothing _ _) = Left NoInitialState
+toApp :: E.MonadError DSLError m => String -> AppBuilder -> m A.App
+toApp _ (AppBuilder Nothing _ _) = E.throwError $ liftModelError NoInitialState
 toApp n (AppBuilder (Just s) ss mbs) = case M.elems mbs of
-  (b:bs) -> Right $ A.App n s (M.elems ss) (b NE.:| bs)
-  _      -> Left NoBrick
+  (b:bs) -> A.App n <$> findInitialState ss
+                    <*> pure (M.elems $ M.delete s ss)
+                    <*> pure (b NE.:| bs)
+    where
+      initialStateNotFound = E.throwError . liftRefError $ InitialStateDoesntExist n
+      findInitialState = maybe initialStateNotFound return . M.lookup s
+  _      -> E.throwError $ liftModelError NoBrick
 
 addSensor :: S.MonadState AppBuilder m
           => String -> Natural -> m ()
@@ -83,17 +89,23 @@ initialState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
              => String -> m ()
 initialState name = do
   s <- S.get
-  case view startState s of
-    Nothing -> do
-      checkState name s
-      startState L..= (Just $ newState name)
+  case view startStateName s of
+    Nothing -> startStateName L..= Just name
     Just _  -> E.throwError $ liftModelError AmbiguousInitialState
+
+start :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+      => String -> m ()
+start = initialState
 
 defineState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ()
 defineState name = (S.get >>= checkState name) >> defineStateS
   where
     defineStateS = states . L.at name L.?= newState name
+
+defineStates :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
+            => [String] -> m ()
+defineStates = F.traverse_ defineState
 
 newState :: String -> A.State
 newState name = A.State name mempty mempty
@@ -144,11 +156,10 @@ to act sig = A.Action <$> pure sig <*> act
 goto :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
      => String -> m A.State
 goto name = do
-  s <- S.gets $ liftA2 (<|>) checkStates checkInitialState
+  s <- S.gets checkStates
   maybe (E.throwError $ liftRefError $ UnknownState name) return s
     where
       checkStates = view $ states . L.at name
-      checkInitialState = views startState $ mfilter (L.has $ A.stateName . L.only name)
 
 actionsWhen :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
@@ -168,15 +179,12 @@ checkState name = maybe (return ()) (const err) . nameExists
 resolveState :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
              => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
 resolveState name = do
-  s <- S.gets $ liftA2 (<|>) checkInitialState checkStates
+  s <- S.gets checkStates
   maybe (E.throwError $ liftRefError $ UnknownState name) return s
     where
       checkStates a = do
         _ <- L.view (states . L.at name) a
         return $ over (states . L.at name . L._Just)
-      checkInitialState a = do
-        _ <- L.preview (startState . L._Just . A.stateName . L.only name) a
-        return $ over (startState . L._Just)
 
 
 onPin :: Natural -> Natural
@@ -187,13 +195,10 @@ buildApp :: String
          -> Either DSLError A.App
 buildApp name plan = do
   builder <- S.execStateT plan emptyBuilder
-  B.first liftModelError $ toApp name builder
+  toApp name builder
 
 statesName :: AppBuilder -> [String]
-statesName = liftA2 (maybe id (:)) initialStateName otherStatesName
- where
-   initialStateName = L.preview (startState . L._Just . A.stateName)
-   otherStatesName = views states M.keys
+statesName = views states M.keys
 
 type DSLError = Either InvalidModel InvalidRef
 
@@ -214,4 +219,5 @@ data InvalidRef
   = UnknownState String
   | UnknownBrick String
   | WrongBrickType String
+  | InitialStateDoesntExist String
   deriving (Eq, Show, Read)
