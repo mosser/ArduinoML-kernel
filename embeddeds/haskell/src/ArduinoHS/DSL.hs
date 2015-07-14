@@ -147,8 +147,8 @@ goto name = do
   s <- S.gets $ liftA2 (<|>) checkStates checkInitialState
   maybe (E.throwError $ liftRefError $ UnknownState name) return s
     where
-      checkStates = view $ states . L.to (M.lookup name)
-      checkInitialState = views startState $ mfilter (views A.stateName (== name))
+      checkStates = view $ states . L.at name
+      checkInitialState = views startState $ mfilter (L.has $ A.stateName . L.only name)
 
 actionsWhen :: (S.MonadState AppBuilder m, E.MonadError DSLError m)
             => String -> m ((A.State -> A.State) -> AppBuilder -> AppBuilder)
@@ -179,9 +179,8 @@ resolveState name = do
         return $ over (startState . L._Just)
 
 
-onPort :: Natural -> Natural
-onPort = id
-
+onPin :: Natural -> Natural
+onPin = id
 
 buildApp :: String
          -> S.StateT AppBuilder (Either DSLError) ()
