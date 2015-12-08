@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="arduinoML" nsURI="fr.uns.polytech.al.arduinoML" nsPrefix="arduinoML">
+  <eClassifiers xsi:type="ecore:EClass" name="Brick" abstract="true" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pin" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Actuator" eSuperTypes="#//Brick"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Sensor" eSuperTypes="#//Brick"/>
+  <eClassifiers xsi:type="ecore:EClass" name="App" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bricks" lowerBound="1"
+        upperBound="-1" eType="#//Brick" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" lowerBound="1"
+        upperBound="-1" eType="#//State" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initial" lowerBound="1"
+        eType="#//State"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="State" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" lowerBound="1"
+        upperBound="-1" eType="#//Action" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transition" lowerBound="1"
+        eType="#//Transition" containment="true" eOpposite="#//Transition/state"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Signal">
+    <eLiterals name="HIGH"/>
+    <eLiterals name="LOW" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Action">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Signal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actuator" lowerBound="1"
+        eType="#//Actuator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Transition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//Signal"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="next" lowerBound="1" eType="#//State"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sensor" lowerBound="1"
+        eType="#//Sensor"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="state" lowerBound="1" eType="#//State"
+        eOpposite="#//State/transition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+</ecore:EPackage>
