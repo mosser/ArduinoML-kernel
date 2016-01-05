@@ -4,9 +4,11 @@ This project is a quick and dirty implementation of the ArduinoML language using
 
 ## Intentions
 
-  * loading the DSL should be as easy as mixing a trait
-  * we create apps one at a time
-  * compatible with classical code completion from the IDE
+  * Have the easiest syntax possible, undestandable by any "domain" person (ie. knows what is a sensor, button...)
+
+## Limitations
+
+  * Code completion will not be supported by default by Eclipse
 
 ## Syntax example
 
