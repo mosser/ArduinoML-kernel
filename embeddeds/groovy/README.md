@@ -23,6 +23,7 @@ from on to off when button is high
 from off to on when button is high
 
 export "Switch!"
+```
 
 ## Requirements
 
