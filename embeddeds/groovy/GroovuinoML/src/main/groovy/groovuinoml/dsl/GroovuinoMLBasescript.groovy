@@ -1,5 +1,7 @@
 package main.groovy.groovuinoml.dsl
 
+import java.util.List;
+
 import io.github.mosser.arduinoml.kernel.behavioral.Action
 import io.github.mosser.arduinoml.kernel.behavioral.State;
 import io.github.mosser.arduinoml.kernel.structural.Sensor
@@ -15,19 +17,25 @@ abstract class GroovuinoMLBasescript extends Script {
 		[pin: { n -> ((GroovuinoMLBinding)this.getBinding()).getGroovuinoMLModel().createActuator(name, n) }]
 	}
 	
-	// state "name" is actuator is signal
+	// state "name" means actuator becomes signal [and actuator becomes signal]*n
 	def state(String name) {
-		[means: { actuator -> 
+		List<Action> actions = new ArrayList<Action>()
+		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createState(name, actions)
+		// recursive closure to allow multiple and statements
+		def closure
+		closure = { actuator -> 
 			[becomes: { signal ->
 				Action action = new Action()
 				action.setActuator(actuator)
 				action.setValue(signal)
-				((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createState(name, Arrays.asList(action))
+				actions.add(action)
+				[and: closure]
 			}]
-		}]
+		}
+		[means: closure]
 	}
 	
-	// state state is initial
+	// initial state
 	def initial(State state) {
 		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state)
 	}
