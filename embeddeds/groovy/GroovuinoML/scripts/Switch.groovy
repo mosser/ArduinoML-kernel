@@ -1,12 +1,12 @@
-def show = { println it }
-def square_root = { Math.sqrt(it) }
+sensor "button" pin 9
+actuator "led" pin 12
 
-def please(action) {
-  [the: { what ->
-	[of: { n -> action(what(n)) }]
-  }]
-}
+state "on" means led becomes high
+state "off" means led becomes low
 
-// equivalent to: please(show).the(square_root).of(100)
-please show the square_root of 100
-// ==> 10.0
+initial off
+
+from on to off when button becomes high
+from off to on when button becomes high
+
+export "Switch!"

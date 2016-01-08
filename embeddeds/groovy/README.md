@@ -1,26 +1,34 @@
-# GroovuinoML: ArduinoML implementation using Groovy
+# GroovuinoML 
+# ArduinoML implementation using Groovy
 
 This project is a quick and dirty implementation of the ArduinoML language using Groovy as a host language.
+(Note: groovy means fashionable and exciting)
 
 ## Intentions
 
   * Have the easiest syntax possible, undestandable by any "domain" person (ie. knows what is a sensor, button...)
+  * Mix Java and Groovy code to proove it can be used in a Java based application
+  * The code could have been shorter in a single file but it is always better to separate the different key parts of the DSL
 
 ## Limitations
 
   * Code completion will not be supported by default by Eclipse. But it is possible to create the associated DSL Descriptor (https://spring.io/blog/2011/05/09/better-dsl-support-in-groovy-eclipse).
+  * The syntax could be improved by using some meta-programming capabilities of Groovy and redefining some reserved words like 
+  `is`
 
 ## Syntax example
 
 ```Groovy
-sensor "button" on pin 9
-actuator "led" on pin 12
+sensor "button" pin 9
+actuator "led" pin 12
 
-state "on" led is high
-initial state "off" led is low
+state "on" means led becomes high
+state "off" means led becomes low
 
-from on to off when button is high
-from off to on when button is high
+initial off
+
+from on to off when button becomes high
+from off to on when button becomes high
 
 export "Switch!"
 ```
