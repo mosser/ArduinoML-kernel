@@ -55,4 +55,16 @@ abstract class GroovuinoMLBasescript extends Script {
 	def export(String name) {
 		println(((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().generateCode(name).toString())
 	}
+	
+	// disable run method while running
+	int count = 0
+	abstract void scriptBody()
+	def run() {
+		if(count == 0) {
+			count++
+			scriptBody()
+		} else {
+			println "Run method is disabled"
+		}
+	}
 }
