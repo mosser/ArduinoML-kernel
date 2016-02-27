@@ -16,5 +16,5 @@ baseline: spec
 				with: [ 
 					spec
 						className: 'ConfigurationOfMoose';
-						version: '6.0';
+						version: '6.0-baseline';
 						repository: 'http://smalltalkhub.com/mc/Moose/Moose/main' ] ]
