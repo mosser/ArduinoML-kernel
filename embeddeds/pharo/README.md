@@ -16,11 +16,11 @@
 	build.
 ```
 
-##Install ArduinoML in Pharo 4.0
-
-- Install last MOOSE image: http://www.moosetechnology.org/
-- Install GitFileTree from Configuration Browser
-- Execute in a PlayGround:
+##Install ArduinoML in Pharo 5.0 (Spur VM)
+* Download a Spur VM: https://ci.inria.fr/pharo/view/5.0-VM-Spur/job/PharoVM-spur32/
+* Download the last dev MOOSE 6.0 on INRIA's CI server: https://ci.inria.fr/moose/job/moose-6.0/
+* Install GitFileTree from Configuration Browser
+* Execute in a Playground:
 ```Smalltalk
 Metacello new
     baseline: 'ArduinoML';
