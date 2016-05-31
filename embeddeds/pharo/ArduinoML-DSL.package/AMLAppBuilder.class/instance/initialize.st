@@ -1,4 +1,4 @@
-as yet unclassified
+initialization
 initialize
 	bricks := OrderedCollection new.
 	states := OrderedCollection new.
