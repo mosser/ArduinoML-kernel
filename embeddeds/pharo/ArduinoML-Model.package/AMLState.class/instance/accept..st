@@ -1,3 +1,3 @@
-as yet unclassified
+visitor
 accept: aVisitor
 	^ aVisitor visitState: self

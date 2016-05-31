@@ -1,12 +1,14 @@
 {
 	"class" : {
-		 },
+		"example1" : "SergeStinckwich 5/31/2016 10:33" },
 	"instance" : {
 		"contents" : "SergeStinckwich 5/28/2016 23:14",
 		"formatGlobalVariable:" : "SergeStinckwich 5/29/2016 00:54",
 		"formatLoop:" : "SergeStinckwich 5/29/2016 00:03",
 		"formatSetup:" : "SergeStinckwich 5/29/2016 00:09",
 		"formatSetupPinMode:" : "SergeStinckwich 5/29/2016 00:41",
+		"formatState:" : "SergeStinckwich 5/31/2016 10:27",
 		"initialize" : "SergeStinckwich 5/28/2016 23:15",
-		"visitApp:" : "SergeStinckwich 5/29/2016 00:56",
-		"visitNode:" : "SergeStinckwich 5/28/2016 23:34" } }
+		"visitApp:" : "SergeStinckwich 5/31/2016 10:29",
+		"visitNode:" : "SergeStinckwich 5/28/2016 23:34",
+		"visitState:" : "SergeStinckwich 5/31/2016 10:26" } }
