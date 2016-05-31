@@ -2,6 +2,7 @@
 	"class" : {
 		 },
 	"instance" : {
+		"testAStateWithoutTransitionsAndActionGenerateAnEmptyFunction" : "SergeStinckwich 5/31/2016 10:19",
 		"testFormatGlobalVariable" : "SergeStinckwich 5/29/2016 00:53",
 		"testFormatSetupPinModeForActuator" : "SergeStinckwich 5/29/2016 00:43",
 		"testFormatSetupPinModeForSensor" : "SergeStinckwich 5/29/2016 00:43",
