@@ -2,10 +2,11 @@
 	"class" : {
 		"annotation" : "SergeStinckwich 7/10/2015 17:01:38" },
 	"instance" : {
+		"accept:" : "SergeStinckwich 5/28/2016 22:46",
 		"addBrick:" : "SergeStinckwich 7/11/2015 14:56:30",
 		"addState:" : "SergeStinckwich 7/11/2015 14:56:30",
 		"bricks" : "SergeStinckwich 7/10/2015 17:01:38",
 		"bricks:" : "SergeStinckwich 7/11/2015 14:56:30",
-		"initialize" : "SergeStinckwich 7/10/2015 17:01:38",
+		"initialize" : "SergeStinckwich 5/28/2016 23:37",
 		"states" : "SergeStinckwich 7/10/2015 17:01:38",
 		"states:" : "SergeStinckwich 7/11/2015 15:43" } }
