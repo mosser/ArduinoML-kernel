@@ -1,5 +1,5 @@
 tests
-testLoopWith
+testFormatCallFirstFunctionInLoop
 	| result app |
 	app := #myApp arduinoApp
     bricks:
