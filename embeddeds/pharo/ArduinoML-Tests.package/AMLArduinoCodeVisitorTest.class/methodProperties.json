@@ -1,0 +1,9 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"testFormatGlobalVariable" : "SergeStinckwich 5/29/2016 00:53",
+		"testFormatSetupPinModeForActuator" : "SergeStinckwich 5/29/2016 00:43",
+		"testFormatSetupPinModeForSensor" : "SergeStinckwich 5/29/2016 00:43",
+		"testNoBricksGenerateEmptyLoop" : "SergeStinckwich 5/29/2016 00:03",
+		"testNoBricksGenerateEmptySetup" : "SergeStinckwich 5/28/2016 23:59" } }
