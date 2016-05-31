@@ -1,10 +1,10 @@
 {
 	"class" : {
-		"annotation" : "SergeStinckwich 7/10/2015 17:01:38" },
+		"annotation" : "SergeStinckwich 5/31/2016 16:42:12" },
 	"instance" : {
-		"accept:" : "SergeStinckwich 5/28/2016 23:41",
-		"actions" : "SergeStinckwich 7/10/2015 17:01:38",
-		"actions:" : "SergeStinckwich 7/11/2015 16:22",
-		"initialize" : "SergeStinckwich 7/11/2015 14:56:30",
-		"transition" : "SergeStinckwich 7/10/2015 17:01:38",
-		"transition:" : "SergeStinckwich 7/10/2015 17:01:38" } }
+		"accept:" : "SergeStinckwich 5/31/2016 16:42:12",
+		"actions" : "SergeStinckwich 5/31/2016 16:42:12",
+		"actions:" : "SergeStinckwich 5/31/2016 16:42:12",
+		"initialize" : "SergeStinckwich 5/31/2016 16:42:12",
+		"transition" : "SergeStinckwich 5/31/2016 16:42:12",
+		"transition:" : "SergeStinckwich 5/31/2016 16:42:12" } }

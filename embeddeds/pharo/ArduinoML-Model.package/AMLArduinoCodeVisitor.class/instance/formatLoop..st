@@ -1,5 +1,6 @@
 as yet unclassified
 formatLoop: anAMLApp
 	stream nextPutAll: 'void loop(){'.
-	self formatInitialState: anAMLApp states first.
+	anAMLApp states isNotEmpty ifTrue:[
+	self formatInitialState: anAMLApp states first].
 	stream nextPutAll: '}'
