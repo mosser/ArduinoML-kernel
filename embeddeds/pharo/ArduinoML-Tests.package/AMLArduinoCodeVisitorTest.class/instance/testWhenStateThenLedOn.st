@@ -1,6 +1,5 @@
 tests
 testWhenStateThenLedOn
-
 	| result app |
 	app := #myApp arduinoApp
     bricks:
