@@ -10,5 +10,9 @@ formatState: anAMLState
 			stream nextPut: Character tab.
 			self formatStateInitialize: each ].
 	anAMLState actions isNotEmpty
+		ifTrue: [ stream nextPut: Character cr ].	
+	anAMLState transition isNotNil
+		ifTrue: [ stream nextPut: Character tab. self formatTransition: anAMLState transition fromState: anAMLState ].
+	anAMLState actions isNotEmpty
 		ifTrue: [ stream nextPut: Character cr ].
 	stream nextPutAll: '}'
