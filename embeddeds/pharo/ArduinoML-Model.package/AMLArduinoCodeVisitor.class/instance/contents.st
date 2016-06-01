@@ -1,0 +1,3 @@
+visitor
+contents
+	^ stream contents
