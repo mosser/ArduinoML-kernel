@@ -13,7 +13,7 @@ This project is a quick and dirty implementation of the ArduinoML language using
 
 ## Limitations
 
-  * Code completion will not be supported by default by Eclipse. But it is possible to create the associated DSL Descriptor (https://spring.io/blog/2011/05/09/better-dsl-support-in-groovy-eclipse). The DSL file that you can find in this project works but is not complete. This is more an example than a perfect implementation.
+  * Code completion will not be supported by default by Eclipse. But it is possible to create the associated DSL Descriptor (https://spring.io/blog/2011/05/09/better-dsl-support-in-groovy-eclipse). The DSLD file that you can find in this project works but is not complete. This is more an example than a perfect implementation.
   * The syntax could be improved by using some meta-programming capabilities of Groovy and redefining some reserved keywords like 
   `is`
 
