@@ -3,13 +3,16 @@ package main.groovy.groovuinoml.dsl
 import java.util.List;
 
 import io.github.mosser.arduinoml.kernel.behavioral.Action
-import io.github.mosser.arduinoml.kernel.behavioral.State;
+import io.github.mosser.arduinoml.kernel.behavioral.State
+import io.github.mosser.arduinoml.kernel.structural.Actuator
 import io.github.mosser.arduinoml.kernel.structural.Sensor
+import io.github.mosser.arduinoml.kernel.structural.SIGNAL
 
 abstract class GroovuinoMLBasescript extends Script {
 	// sensor "name" pin n
 	def sensor(String name) {
-		[pin: { n -> ((GroovuinoMLBinding)this.getBinding()).getGroovuinoMLModel().createSensor(name, n) }]
+		[pin: { n -> ((GroovuinoMLBinding)this.getBinding()).getGroovuinoMLModel().createSensor(name, n) },
+		onPin: { n -> ((GroovuinoMLBinding)this.getBinding()).getGroovuinoMLModel().createSensor(name, n)}]
 	}
 	
 	// actuator "name" pin n
@@ -26,8 +29,8 @@ abstract class GroovuinoMLBasescript extends Script {
 		closure = { actuator -> 
 			[becomes: { signal ->
 				Action action = new Action()
-				action.setActuator(actuator)
-				action.setValue(signal)
+				action.setActuator(actuator instanceof String ? (Actuator)((GroovuinoMLBinding)this.getBinding()).getVariable(actuator) : (Actuator)actuator)
+				action.setValue(signal instanceof String ? (SIGNAL)((GroovuinoMLBinding)this.getBinding()).getVariable(signal) : (SIGNAL)signal)
 				actions.add(action)
 				[and: closure]
 			}]
@@ -36,16 +39,20 @@ abstract class GroovuinoMLBasescript extends Script {
 	}
 	
 	// initial state
-	def initial(State state) {
-		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state)
+	def initial(state) {
+		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state) : (State)state)
 	}
 	
 	// from state1 to state2 when sensor becomes signal
-	def from(State state1) {
+	def from(state1) {
 		[to: { state2 -> 
 			[when: { sensor ->
 				[becomes: { signal -> 
-					((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createTransition(state1, state2, sensor, signal)
+					((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createTransition(
+						state1 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state1) : (State)state1, 
+						state2 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state2) : (State)state2, 
+						sensor instanceof String ? (Sensor)((GroovuinoMLBinding)this.getBinding()).getVariable(sensor) : (Sensor)sensor, 
+						signal instanceof String ? (SIGNAL)((GroovuinoMLBinding)this.getBinding()).getVariable(signal) : (SIGNAL)signal)
 				}]
 			}]
 		}]
