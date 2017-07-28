@@ -6,6 +6,7 @@ import io.github.mosser.arduinoml.externals.antlr.grammar.*;
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 public class ModelBuilder extends ArduinomlBaseListener {
 
@@ -57,5 +58,9 @@ public class ModelBuilder extends ArduinomlBaseListener {
         this.theApp.getBricks().add(actuator);
     }
 
+    @Override
+    public void visitErrorNode(ErrorNode node) {
+        System.out.println("Parsing error!");
+    }
 }
 
