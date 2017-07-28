@@ -28,10 +28,19 @@ For example, let’s consider the following scenario: _“As a user, considering
 ## Contributors
 
   * [Nicolas Biri](https://www.linkedin.com/profile/view?id=91979)
-  * [Pierre-Étienne Moreau](https://sites.google.com/a/depinfonancy.net/pem/)
+    * Haskell
+  * [Nicolas Jeannerod](https://niols.fr/)
+    * Shell
+  * [Ivan Logre](http://www.i3s.unice.fr/~logre/)
+    * Xtext
+  * [Thomas Moreau](https://www.linkedin.com/in/moreaut/?ppe=1)
+    * Groovy
   * [Sébastien Mosser](http://www.i3s.unice.fr/~mosser)
+    * Zoo architect
   * [Pascal Poizat](https://pages.lip6.fr/Pascal.Poizat/)
+    * Python
   * [Serge Stinckwich](http://www.doesnotunderstand.org/)
+    * Pharo
   
 ## References
 
