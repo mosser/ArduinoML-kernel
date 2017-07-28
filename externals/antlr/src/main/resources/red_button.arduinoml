@@ -8,12 +8,12 @@ bricks:
 # Declaring states
 states:
 
-    -> on {
+    on {
         led <= HIGH
         button is HIGH => off
     }
 
-    off {
+    -> off {
         led <= LOW
         button is HIGH => on
     }
