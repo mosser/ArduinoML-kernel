@@ -1,0 +1,6 @@
+application redButton
+
+# Declaring bricks
+bricks:
+    sensor button: 9
+    actuator led: 12

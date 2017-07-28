@@ -5,11 +5,13 @@ grammar Arduinoml;
  ** Parser rules **
  ******************/
 
-root        :   bricks EOF;
+root        :   declaration bricks EOF;
 
-bricks          :   'sensors' ':' NEWLINE (sensor|actuator)+;
-    sensor      :   'sensor'   location NEWLINE;
-    actuator    :   'actuator' location NEWLINE;
+declaration     :   'application' name=IDENTIFIER;
+
+bricks          :   'bricks' ':' (sensor|actuator)+;
+    sensor      :   'sensor'   location ;
+    actuator    :   'actuator' location ;
     location    :   id=IDENTIFIER ':' port=PORT_NUMBER;
 
 
@@ -25,8 +27,8 @@ IDENTIFIER      :   LOWERCASE (LOWERCASE|UPPERCASE)+;
  ** Helpers **
  *************/
 
-fragment LOWERCASE  : [a-z]; // abstract rule, does not really exists
+fragment LOWERCASE  : [a-z];                                 // abstract rule, does not really exists
 fragment UPPERCASE  : [A-Z];
-NEWLINE     : ('\r'? '\n' | '\r')+ ;
-
-WS : ((' ' | '\t')+) -> skip; // who cares about whitespaces?
+NEWLINE             : ('\r'? '\n' | '\r')+      -> skip;
+WS                  : ((' ' | '\t')+)           -> skip;     // who cares about whitespaces?
+COMMENT             : '#' ~( '\r' | '\n' )*     -> skip;     // Single line comments, starting with a #

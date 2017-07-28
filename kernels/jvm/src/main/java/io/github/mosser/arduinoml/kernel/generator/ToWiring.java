@@ -36,9 +36,11 @@ public class ToWiring extends Visitor<StringBuffer> {
 			state.accept(this);
 		}
 
-		w("void loop() {");
-		w(String.format("  state_%s();", app.getInitial().getName()));
-		w("}");
+		if (app.getInitial() != null) {
+			w("void loop() {");
+			w(String.format("  state_%s();", app.getInitial().getName()));
+			w("}");
+		}
 	}
 
 	@Override
@@ -58,10 +60,13 @@ public class ToWiring extends Visitor<StringBuffer> {
 		for(Action action: state.getActions()) {
 			action.accept(this);
 		}
-		w("  boolean guard = millis() - time > debounce;");
-		context.put(CURRENT_STATE, state);
-		state.getTransition().accept(this);
-		w("}\n");
+
+		if (state.getTransition() != null) {
+			w("  boolean guard = millis() - time > debounce;");
+			context.put(CURRENT_STATE, state);
+			state.getTransition().accept(this);
+			w("}\n");
+		}
 
 	}
 
