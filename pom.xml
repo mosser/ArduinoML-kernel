@@ -20,6 +20,7 @@
         <module>externals/antlr</module>
         <module>embeddeds/groovy/GroovuinoML</module>
         <module>embeddeds/scala</module>
+        <module>embeddeds/java</module>
 
     </modules>
 </project>
