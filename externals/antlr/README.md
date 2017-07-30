@@ -11,7 +11,7 @@ This is a quick and dirty implementation of the ArduinoML kernel, using the Java
     the build phase to generate the Java code associated to the grammar. It also make possible to run the compiler
     from the command line
   * The `src/main/antlr4` directory contains the grammar (using java convention to implement packages as directories)
-  * The `src/main./java` directory contains the compiler code
+  * The `src/main/java` directory contains the compiler code
 
 
 ## Running the example
