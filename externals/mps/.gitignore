@@ -1,3 +1,5 @@
 **/*.java
 **/*.class
+**/*_gen*
+**/*.info
 
