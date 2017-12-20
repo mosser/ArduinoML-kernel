@@ -10,5 +10,5 @@
 	"name" : "AMLEntity",
 	"pools" : [
 		 ],
-	"super" : "MooseEntity",
+	"super" : "Object",
 	"type" : "normal" }
