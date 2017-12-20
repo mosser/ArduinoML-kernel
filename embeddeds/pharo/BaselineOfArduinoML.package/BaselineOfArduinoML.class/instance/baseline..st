@@ -10,11 +10,4 @@ baseline: spec
 				package: 'ArduinoML-Tests' with: [ spec requires: 'ArduinoML-DSL' ].
 			spec
 				group: 'Default' with: #('ArduinoML-Model' 'ArduinoML-DSL');
-				group: 'Tests' with: #('ArduinoML-Tests').
-			spec
-				project: 'Moose'
-				with: [ 
-					spec
-						className: 'ConfigurationOfMoose';
-						version: '6.0-baseline';
-						repository: 'http://smalltalkhub.com/mc/Moose/Moose/main' ] ]
+				group: 'Tests' with: #('ArduinoML-Tests').]
