@@ -1,3 +1,3 @@
-as yet unclassified
+visiting
 visitNode: aNode
 	^ aNode accept: self

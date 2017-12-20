@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatState: anAMLState
 	stream nextPutAll: 'void state_'.
 	stream nextPutAll: anAMLState amlName.

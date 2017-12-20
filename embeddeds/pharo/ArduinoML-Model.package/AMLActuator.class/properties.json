@@ -1,14 +1,11 @@
 {
-	"category" : "ArduinoML-Model",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		 ],
-	"name" : "AMLActuator",
-	"pools" : [
-		 ],
 	"super" : "AMLBrick",
-	"type" : "normal" }
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "AMLActuator",
+	"type" : "normal"
+}

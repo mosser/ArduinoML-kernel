@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatStateInitialize: anAMLAction
 	stream nextPutAll: 'digitalWrite('.
 	stream

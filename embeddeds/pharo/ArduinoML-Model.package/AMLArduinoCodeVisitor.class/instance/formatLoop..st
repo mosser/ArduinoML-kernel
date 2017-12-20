@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatLoop: anAMLApp
 	stream nextPutAll: 'void loop(){'.
 	anAMLApp states isNotEmpty ifTrue:[

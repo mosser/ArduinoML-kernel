@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatTransition: anAMLTransition fromState: anAMLState
 	stream nextPutAll: 'if (digitalRead('.
 	stream nextPutAll: anAMLTransition sensor amlName.
