@@ -1,0 +1,75 @@
+#!/bin/sh
+# Testing execution on examples
+#
+#           Author: Erick Gallesio [eg@unice.fr]
+#    Creation date:  4-Dec-2017 16:49
+# Last file update:  4-Dec-2017 18:08 (eg)
+
+# Implementation predicates
+has_stklos() {
+    stklos -l $TST_FILE  > /dev/null 2>&1
+    test $? == 42
+}
+
+has_gauche() {
+    gosh -l $TST_FILE  > /dev/null 2>&1
+    test $? == 42
+}
+
+has_guile() {
+    guile --no-auto-compile -s $TST_FILE  > /dev/null 2>&1
+    test $? == 42
+}
+
+has_racket() {
+    racket -f $TST_FILE  > /dev/null 2>&1
+    test $? == 42
+}
+
+
+
+# Create a test file to see if a Scheme implementation exists
+TST_FILE=/tmp/$$.scm
+echo "(exit 42)" > $TST_FILE
+
+
+
+# Do the tests
+for i in  $*
+do
+    echo "==== Testing $i"
+    out=OUT/OUT-`basename $i .scm`
+    fail=OUT/ERR-`basename $i .scm`
+
+    if has_stklos ;then
+        stklos -c -l arduino.scm -f $i > $out.stklos 2> $fail.stklos
+    fi
+
+    if has_gauche ;then
+        gosh -I. -l arduino.scm $i > $out.gosh 2> $fail.gosh
+    fi
+
+    if has_guile ;then
+        guile --no-auto-compile -l arduino.scm -s $i >  $out.guile 2> $fail.guile
+    fi
+
+    if has_racket ;then
+        racket -f arduino.ss -f $i >  $out.racket 2> $fail.racket
+    fi
+
+    
+done
+
+
+# Show MD5 signatures of non-empty files
+for i in OUT/OUT-* OUT/ERR-*
+do
+    if [ "$(wc -c $i | cut -d ' ' -f 1)" == "0" ] ;then
+        rm $i
+    else
+        md5sum $i
+    fi
+done
+
+# Clean test file
+rm -f $TST_FILE

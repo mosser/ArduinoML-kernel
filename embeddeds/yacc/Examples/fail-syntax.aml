@@ -1,0 +1,22 @@
+// A simple ArduinoML file                       -*- mode: c -*-
+//
+//           Author: Erick Gallesio [eg@unice.fr]
+//    Creation date: 16-Nov-2017 18:07
+// Last file update: 28-Nov-2017 09:11 (eg)
+
+application foo {
+  // Declaring bricks
+  sensor button : 9;
+  actuator led  : * 10 ;        // Error ('*')
+
+  // Declaring states
+  on {
+    led <= HIGH                 // Error (missing ';')
+    button is HIGH => off;
+  }
+
+  -> off {
+    led <= LOW;
+    button is HIGH => on;
+  }
+}

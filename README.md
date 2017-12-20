@@ -41,6 +41,9 @@ For example, let’s consider the following scenario: _“As a user, considering
     * Python
   * [Serge Stinckwich](http://www.doesnotunderstand.org/)
     * Pharo
+  * [Erick Gallesio](http://gallesio.org/~eg)
+    * Lex/Yacc/C
+    * Scheme
   
 ## References
 
