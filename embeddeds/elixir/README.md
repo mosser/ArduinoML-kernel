@@ -61,7 +61,7 @@ void state_off() {
     time = millis();
     state_on();
   } else {
-    state_off;
+    state_off();
   }
 }
 
@@ -74,13 +74,13 @@ void state_on() {
     time = millis();
     state_off();
   } else {
-    state_on;
+    state_on();
   }
 }
 
 // This function specify the first state.
 void loop() {
-  state_off;
+  state_off();
 }
 ```
 

@@ -65,7 +65,7 @@ defmodule ArduinoML.CodeProducer do
     initial_label = Application.initial(application)
 
     "void loop() {\n" <>
-      Helper.statement(initial_label |> state_function_name |> Helper.indented(1)) <>
+      Helper.statement(initial_label |> state_function_call |> Helper.indented(1)) <>
       "}"    
   end
 
@@ -81,7 +81,7 @@ defmodule ArduinoML.CodeProducer do
       transitions_lines(transitions) <>
       "else {" <>
       Helper.new_line <>
-      (state_function_name(label) |> Helper.statement |> Helper.indented(2)) <>
+      (state_function_call(label) |> Helper.statement |> Helper.indented(2)) <>
       Helper.indented("}", 1) <>
       Helper.new_line <>
       "}" <>
@@ -90,11 +90,11 @@ defmodule ArduinoML.CodeProducer do
 
   defp transitions_lines(transitions), do: transitions_lines(transitions, true)
   defp transitions_lines([], _), do: ""
-  defp transitions_lines([%{from: from, to: to, on: assertions} | others], is_first) do
+  defp transitions_lines([%{from: _, to: to, on: assertions} | others], is_first) do
     (condition_keyword(is_first) <> " (" <> condition(assertions) <> ") {") <>
       Helper.new_line <>
       ("time = millis()" |> Helper.statement |> Helper.indented(2)) <>
-      (state_function_name(to) <> "()" |> Helper.statement |> Helper.indented(2)) <>
+      (to |> state_function_call |> Helper.statement |> Helper.indented(2)) <>
       Helper.indented("} ", 1) <>
       transitions_lines(others, false)
   end
@@ -128,6 +128,8 @@ defmodule ArduinoML.CodeProducer do
 
     line <> setup_bricks(others, stream)
   end
+
+  defp state_function_call(label), do: state_function_name(label) <> "()"
   
   defp state_function_name(label), do: "state_" <> state_label(label)
 
