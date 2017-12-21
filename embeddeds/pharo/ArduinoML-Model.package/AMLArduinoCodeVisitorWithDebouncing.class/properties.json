@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "AMLArduinoCodeVisitor",
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "AMLArduinoCodeVisitorWithDebouncing",
+	"type" : "normal"
+}
