@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "AMLAppTest",
+	"name" : "AMLArduinoCodeVisitorWithDebouncingTest",
 	"type" : "normal"
 }
