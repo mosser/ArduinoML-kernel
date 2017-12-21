@@ -3,143 +3,152 @@ defmodule ArduinoML do
   Contains the definition of the DSL API.
   """
 
+  use Agent
+
   alias ArduinoML.Application, as: Application
   alias ArduinoML.Brick, as: Brick
   alias ArduinoML.Action, as: Action
   alias ArduinoML.Assertion, as: Assertion
   alias ArduinoML.State, as: State
   alias ArduinoML.Transition, as: Transition
+  alias ArduinoML.CodeProducer, as: CodeProducer
 
   @doc """
-  Initializes an Arduino application.
-
-  Returns an ArduinoML.Application structure.
-
-  ## Examples
-
-    iex> ArduinoML.application("app")
-    %ArduinoML.Application{name: "app", sensors: [], actuators: [], states: [], transitions: [], initial: nil}
-  
+  Initializes the application and names it.
   """
-  def application(name), do: %Application{name: name}
+  def application(name) do
+    Agent.start_link(fn -> %Application{name: name} end, name: __MODULE__)
 
-  @doc """
-  Replaces the known bindings "sensors ~ pins" for an application.
-
-  Returns the updated ArduinoML.Application.
-
-  ## Examples
-  
-    iex> ArduinoML.application("app") |> ArduinoML.sensors(button1: 2, button2: 5)
-    %ArduinoML.Application{name: "app", sensors: [%ArduinoML.Brick{label: :button1, pin: 2}, %ArduinoML.Brick{label: :button2, pin: 5}], actuators: [], states: [], transitions: [], initial: nil}
-    
-  """
-  def sensors(app, sensors) when is_list(sensors) do
-    %Application{app | sensors: to_bricks(sensors)}
+    :ok
   end
 
   @doc """
-  Replaces the known bindings "actuators ~ pins" for an application.
-
-  Returns the updated ArduinoML.Application.
+  Adds a sensor to the application.
   """
-  def actuators(app, actuators) when is_list(actuators) do
-    %Application{app | actuators: to_bricks(actuators)}
-  end
+  def sensor([{label, pin}]) do
+    sensor = %Brick{label: label, pin: pin}
 
-  defp to_bricks(tokens) when is_list(tokens) do
-    Enum.map(tokens, fn {label, pin} -> %Brick{label: label, pin: pin} end)
-  end
+    Agent.update(__MODULE__, fn app -> Application.with_sensor(app, sensor) end)
 
-  @doc """
-  Defines a state with no action on opening.
-
-  Returns the updated ArduinoML.Application.
-  """
-  def state(app, [named: label]) do
-    state(app, [named: label, execute: []])
+    :ok
   end
 
   @doc """
-  Defines a state with the lonely action that is executed on state trigger.
-
-  Returns the updated ArduinoML.Application.
+  Adds an actuator to the application.
   """
-  def state(app, [named: label, execute: action]) when is_map(action) do
-    state(app, [named: label, execute: [action]])
+  def actuator([{label, pin}]) do
+    actuator = %Brick{label: label, pin: pin}
+
+    Agent.update(__MODULE__, fn app -> Application.with_actuator(app, actuator) end)
+
+    :ok
   end
 
   @doc """
-  Defines a state with the actions that are executed on state trigger.
-
-  Returns the updated ArduinoML.Application.
+  Adds a state to the state machine inside the application.
+  This version adds a state with only one "on entry" action.
   """
-  def state(app, [named: label, execute: actions]) when is_list(actions) do
+  def state(label, on_entry: action = %Action{}) do
+    state(label, on_entry: [action])
+  end
+
+  @doc """
+  Adds a state to the state machine inside the application.
+  This version adds a state with multiple "on entry" actions.
+  """
+  def state(label, on_entry: actions) when is_list(actions) do
     state = %State{label: label, actions: actions}
-    
-    %Application{app | states: [state | app.states]}
+
+    Agent.update(__MODULE__, fn app -> Application.with_state(app, state) end)
+
+    :ok
   end
 
   @doc """
-  Specifies the initial state of the application. If not used, the first state is the first specified one.
-
-  Returns the updated ArduinoML.Application.
+  Setup the initial state of the inner state machine of the application.
+  If this is not used, the initial state is the first declared state.
   """
-  def initial(app, label) do
-    %Application{app | initial: label}
+  def initial(label) do
+    Agent.update(__MODULE__, fn app -> Application.with_initial(app, label) end)
+
+    :ok
   end
 
   @doc """
-  Register a new transition from one state to another on the given condition.
-
-  Returns the updated ArduinoML.Application.
+  Builds an action "set the actuator to the given signal".
   """
-  def transition(app, [from: from, to: to, on: assertion]) when is_map(assertion) do
-    transition(app, [from: from, to: to, on: [assertion]])
+  def actuator ~> signal when is_atom(actuator) and is_atom(signal) do
+    %Action{actuator_label: actuator, signal: signal}
   end
 
   @doc """
-  Register a new transition from one state to another on given conditions.
-
-  Returns the updated ArduinoML.Application.
+  Builds an assertion "is the sensor at the given signal?".
   """
-  def transition(app, [from: from, to: to, on: assertions]) when is_list(assertions) do
-    transition = %Transition{from: from, to: to, on: assertions}
-
-    %Application{app | transitions: [transition | app.transitions]}
+  def sensor <~> signal when is_atom(sensor) and is_atom(signal) do
+    %Assertion{sensor_label: sensor, signal: signal}
   end
 
   @doc """
-  Defines an actuator's state changement.
-
-  Returns an ArduinoML.Action which correspond to the expected changement.
-  """
-  def a ~> b, do: %Action{label: a, signal: b}
-
-  @doc """
-  Defines the evaluation of an actuator's state.
-
-  Returns an ArduinoML.Assertion which correspond to this evaluation.
-  """
-  def a <~> b, do: %Assertion{label: a, signal: b}
-
-  @doc """
-  Returns an ArduinoML.Assertion which check if the actuator is in HIGH level.
+  Builds an assertion "is the sensor at HIGH signal?".
   """
   def is_high?(label), do: label <~> :high
 
   @doc """
-  Returns an ArduinoML.Assertion which check if the actuator is in LOW level.
+  Builds an assertion "is the sensor at LOW signal?".
   """
   def is_low?(label), do: label <~> :low
 
   @doc """
-  Transpile a ArduinoML.Application structure into a C code string.
-
-  Return the string which correspond to the C code for the application.
+  Adds a transition to the state machine inside the application.
+  This version adds a transition which is triggered when only one condition is validated.
   """
-  def to_code(app) do
-    ArduinoML.CodeProducer.to_code(app)
+  def transition(from: from, to: to, when: condition = %Assertion{}) do
+    transition(from: from, to: to, when: [condition])
+  end
+
+  @doc """
+  Adds a transition to the state machine inside the application.
+  This version adds a transition which is triggered when multiple conditions are validated.
+  """
+  def transition(from: from, to: to, when: conditions) when is_list(conditions) do
+    transition = %Transition{from: from, to: to, on: conditions}
+
+    Agent.update(__MODULE__, fn app -> Application.with_transition(app, transition) end)
+  end
+
+  @doc """
+  Validates the described application. Will raise errors if it is not valid.
+  """
+  def validate! do
+    get_application()
+    |> validate_application
+  end
+
+  @doc """
+  Translates the described application into C Arduino code.
+  """
+  def to_code! do
+    case validate!() do
+      :ok -> get_application() |> CodeProducer.to_code
+      :error -> "// The structure presents defects. The code cannot be generated."
+    end
+  end
+
+  @doc """
+  Translates and displays the described application.
+  """
+  def finished! do
+    to_code!()
+    |> IO.puts
+  end
+
+  defp get_application do
+    Agent.get(__MODULE__, fn app -> app end)
+  end
+
+  defp validate_application(app) do
+    # TODO Implement the validation.
+    :ok
   end
   
 end

@@ -102,7 +102,7 @@ defmodule ArduinoML.CodeProducer do
   defp condition([]), do: "guard"
   defp condition(assertions) do
     condition = assertions
-    |> Enum.map(fn %{label: label, signal: signal} ->
+    |> Enum.map(fn %{sensor_label: label, signal: signal} ->
       "digitalRead(" <> brick_label(label) <> ") == " <> signal_label (signal) end)
     |> Enum.reduce(fn (sub, acc) -> acc <> " && " <> sub end)
 
@@ -113,7 +113,7 @@ defmodule ArduinoML.CodeProducer do
   defp condition_keyword(true), do: Helper.indented("if", 1)
   
   defp actions_lines([]), do: ""
-  defp actions_lines([%{label: label, signal: signal} | others]) do
+  defp actions_lines([%{actuator_label: label, signal: signal} | others]) do
     line_content = "digitalWrite(" <> brick_label(label) <> ", " <> signal_label(signal) <> ")"
 
     (line_content |> Helper.statement |> Helper.indented(1)) <>

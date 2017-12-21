@@ -1,15 +1,16 @@
 import ArduinoML
 
-application("Switch!")
-|> sensors(button: 9)
-|> actuators(led: 12)
+application "Switch!"
 
-|> state(named: :on, execute: :led ~> :high)
-|> state(named: :off, execute: :led ~> :low)
-|> initial(:off)
+sensor button: 9
+actuator led: 12
 
-|> transition(from: :on, to: :off, on: is_high?(:button))
-|> transition(from: :off, to: :on, on: is_high?(:button))
+state :on, on_entry: :led ~> :high
+state :off, on_entry: :led ~> :low
 
-|> to_code
-|> IO.puts
+initial :off
+
+transition from: :on, to: :off, when: is_high?(:button)
+transition from: :off, to: :on, when: is_high?(:button)
+
+finished!

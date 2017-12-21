@@ -1,3 +1,3 @@
 defmodule ArduinoML.Action do
-  defstruct label: nil, signal: nil
+  defstruct actuator_label: nil, signal: nil
 end
