@@ -74,7 +74,7 @@ defmodule ArduinoML.CodeProducer do
   defp condition_keyword(true), do: "  if"
 
   defp condition(%{sensor_label: label, signal: signal}) do
-    "digitalRead(#{brick_label(label)} == #{signal_label(signal)})"
+    "digitalRead(#{brick_label(label)}) == #{signal_label(signal)}"
   end
   
   defp condition([]), do: "guard"

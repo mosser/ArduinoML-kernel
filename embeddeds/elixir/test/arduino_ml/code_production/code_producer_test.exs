@@ -42,7 +42,7 @@ defmodule ArduinoML.CodeProducerTest do
 
       boolean guard = millis() - time > debounce;
 
-      if (digitalRead(BUTTON == LOW) && guard) {
+      if (digitalRead(BUTTON) == LOW && guard) {
         time = millis();
         state_released();
       } else {
@@ -55,7 +55,7 @@ defmodule ArduinoML.CodeProducerTest do
 
       boolean guard = millis() - time > debounce;
 
-      if (digitalRead(BUTTON == HIGH) && guard) {
+      if (digitalRead(BUTTON) == HIGH && guard) {
         time = millis();
         state_pressed();
       } else {
