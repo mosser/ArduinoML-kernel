@@ -9,8 +9,7 @@ defmodule ArduinoML.Application do
     actuators: [],
     states: [],
     transitions: [],
-    initial: nil,
-    delay: 0
+    initial: nil
 
   @doc """
   Adds a sensor to the given application.
@@ -100,24 +99,6 @@ defmodule ArduinoML.Application do
   """
   def with_initial(app, label) do
     %ArduinoML.Application{app | initial: label}
-  end
-
-  @doc """
-  Setup the delay (in milliseconds) between each transition in the application.
-
-  Returns the updated application. Overwrites the previous delay value if there is one.
-
-  ## Examples
-  
-    iex> ArduinoML.Application.with_delay(%ArduinoML.Application{}, 1)
-    %ArduinoML.Application{delay: 1}
-
-    iex> ArduinoML.Application.with_delay(%ArduinoML.Application{delay: 1}, 2)
-    %ArduinoML.Application{delay: 2}
-
-  """
-  def with_delay(app, delay) do
-	%ArduinoML.Application{app | delay: delay}
   end
       
   @doc """

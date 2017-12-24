@@ -1,4 +1,4 @@
-import ArduinoML
+use ArduinoML
 
 application "Multi-state alarm"
 

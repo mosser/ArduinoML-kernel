@@ -4,14 +4,15 @@ This directory is one quick implementation of ArduinoML in Elixir
 
 ## Requirements
 - An Elixir installation on your system.
-- Compile the project with ```mix compile```.
+- *optional:* Compile the project with ```mix compile```.
+- *optional:* Execute the tests with ```mix test```.
 - Run it on a file with ```mix run FILE_PATH``` (example: ```mix run samples/switch.exs```).
 
 ## Project structure
 
 - The *abstract syntax* is in the [lib/arduino_ml/model](./lib/arduino_ml/model) folder. It is made of structures, so there is no inheritance nor references.
 - The *concrete syntax* is in the file [lib/arduino_ml.ex](./lib/arduino_ml.ex).
-- The *validation* is a task TO-DO. :wink:
+- The *validation* is in the file [lib/arduino_ml/model_validation/model_validator.ex](./lib/arduino_ml/model_validation/model_validator.ex).
 - The *code generation* is in the folder [lib/arduino_ml/code_production](./lib/arduino_ml/code_production).
 
 ## Syntax example
@@ -94,7 +95,4 @@ void loop() {
 
 ## TODO List
 
-- Check the parameters validity.
-- Add documentation.
 - Implement more examples.
-- Add tests.

@@ -14,9 +14,6 @@ defmodule ArduinoML.ModelValidator do
     # Check that all bricks have a uniq name.
     bricks |> Enum.map(&(&1.label)) |> validate_bricks_names
 
-    # Check the delay validity. Should not be wrong if used on an DSL-generated %Application.
-    validate_delay(app.delay)
-
     # Check the validity of the states and transitions.
     validate_state_machine(app)
     
@@ -43,9 +40,6 @@ defmodule ArduinoML.ModelValidator do
       raise "The brick label #{Atom.to_string(label)} has been declared more than once."
     end
   end
-
-  defp validate_delay(delay) when is_integer(delay) and delay >= 0, do: :ok
-  defp validate_delay(_), do: raise "The delay should be a positive integer value."
 
   defp validate_state_machine(%{initial: initial, states: states, transitions: transitions, actuators: actuators, sensors: sensors}) do
     if Enum.empty?(states) do
