@@ -15,8 +15,8 @@ ArduinoML is an example of a _Domain Specific Language_ (DSL), designed to model
 
 For example, let’s consider the following scenario: _“As a user, considering a button and a LED, I want to switch on the LED after pushing the button. Pushing the button again will switch it off, and so on”_. The essence of ArduinoML is to support the definition of such an application. 
 
-![](https://raw.githubusercontent.com/mosser/ArduinoML-kernel/master/docs/platform_small.png)
 
+![](https://raw.githubusercontent.com/mosser/ArduinoML-kernel/master/docs/platform_small.png)
 
 ## Repository Organization
 
@@ -44,7 +44,8 @@ For example, let’s consider the following scenario: _“As a user, considering
   * [Erick Gallesio](http://gallesio.org/~eg)
     * Lex/Yacc/C
     * Scheme
-  
+  * [Antoine Aubé](https://github.com/AntoineAube)
+    * Elixir
 ## References
 
   * [2014] Sébastien Mosser, Philippe Collet, Mireille Blay-Fornarino. _“Exploiting the Internet of Things to Teach Domain-Specific Languages and Modeling”_ in Proceedings of the 10th Educators' Symposium @ MODELS 2014 (EduSymp'14), ACM, IEEE, pages 1-10, Springer LNCS, Valencia, Spain, 29 september 2014
