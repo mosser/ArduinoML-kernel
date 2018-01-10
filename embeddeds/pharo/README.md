@@ -1,5 +1,7 @@
 # ArduinoML for Pharo
 
+ArduinoML meta-model and code generator on top on Pharo : http://www.pharo.org/
+
 ## DSL example
 ```Smalltalk
 | myApp result |
@@ -41,9 +43,8 @@ void loop(){
 }
 ```
 
-## Install ArduinoML in Pharo 5.0 (Spur VM)
-* Download a Spur VM: https://ci.inria.fr/pharo/view/5.0-VM-Spur/job/PharoVM-spur32/
-* Download the last dev MOOSE 6.0 on INRIA's CI server: https://ci.inria.fr/moose/job/moose-6.0/
+## Install ArduinoML in Pharo 6.1
+* Download Pharo 6.1 here: http://pharo.org/download
 * Install GitFileTree from Configuration Browser
 * Execute in a Playground:
 ```Smalltalk
