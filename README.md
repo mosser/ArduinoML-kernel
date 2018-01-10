@@ -44,7 +44,7 @@ For example, let’s consider the following scenario: _“As a user, considering
   * [Erick Gallesio](http://gallesio.org/~eg)
     * Lex/Yacc/C
     * Scheme
-  * [Antoine Aubé](https://github.com/AntoineAube)
+  * [Antoine Aubé](https://github.com/AntoineAube)
     * Elixir
 ## References
 
