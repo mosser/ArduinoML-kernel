@@ -11,13 +11,14 @@ build
 					eachAction
 						actuator: (app bricks detect: [ :each | each amlName == eachAction actuator ]) ] ].
 	app states: states.
-	transitions isEmpty
-		ifFalse: [ transitions
+	 transitions
 				do: [ :eachTransition | 
 					eachTransition
 						sensor: (app bricks detect: [ :each | each amlName == eachTransition sensor ]).
 					eachTransition
 						next: (app states detect: [ :each | each amlName == eachTransition next ]) ].
+	transitions isEmpty
+		ifFalse: [
 			states
 				do: [ :eachState | 
 					eachState

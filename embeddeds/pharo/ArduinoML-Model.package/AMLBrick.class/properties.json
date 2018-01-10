@@ -1,14 +1,13 @@
 {
-	"category" : "ArduinoML-Model",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		"pin" ],
-	"name" : "AMLBrick",
-	"pools" : [
-		 ],
 	"super" : "AMLEntity",
-	"type" : "normal" }
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"pin"
+	],
+	"name" : "AMLBrick",
+	"type" : "normal"
+}

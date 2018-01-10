@@ -1,15 +1,14 @@
 {
-	"category" : "ArduinoML-Model",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "AMLEntity",
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"bricks",
-		"states" ],
+		"states"
+	],
 	"name" : "AMLApp",
-	"pools" : [
-		 ],
-	"super" : "AMLEntity",
-	"type" : "normal" }
+	"type" : "normal"
+}

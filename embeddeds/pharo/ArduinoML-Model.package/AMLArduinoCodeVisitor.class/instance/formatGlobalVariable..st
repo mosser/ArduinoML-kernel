@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatGlobalVariable: anAMLBrick
 	stream nextPutAll: 'int '.
 	stream nextPutAll: anAMLBrick amlName.

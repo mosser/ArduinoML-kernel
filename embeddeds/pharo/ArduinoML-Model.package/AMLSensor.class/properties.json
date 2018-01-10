@@ -1,14 +1,11 @@
 {
-	"category" : "ArduinoML-Model",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
-	"instvars" : [
-		 ],
-	"name" : "AMLSensor",
-	"pools" : [
-		 ],
 	"super" : "AMLBrick",
-	"type" : "normal" }
+	"category" : "ArduinoML-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "AMLSensor",
+	"type" : "normal"
+}

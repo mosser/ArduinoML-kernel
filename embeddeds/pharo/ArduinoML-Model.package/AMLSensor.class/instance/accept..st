@@ -1,3 +1,3 @@
 visitor
 accept: aVisitor
-	^ aVisitor visitActuator: self
+	^ aVisitor visitSensor: self

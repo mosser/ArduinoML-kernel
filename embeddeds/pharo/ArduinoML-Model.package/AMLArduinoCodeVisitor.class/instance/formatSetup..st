@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatSetup: anAMLApp
 	stream nextPutAll: 'void setup(){'.
 	anAMLApp bricks do: [ :each | stream nextPut: Character cr. stream nextPut: Character tab. self formatSetupPinMode: each ].

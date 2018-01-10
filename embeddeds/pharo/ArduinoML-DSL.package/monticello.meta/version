@@ -1,5 +1,0 @@
-(name 'ArduinoML-DSL-SergeStinckwich.5' message 'Typos/formatting' id '217e2f3e-4949-4aa4-bb05-43c35d4bef09' date '31 May 2016' time '9:56:04.797454 am' author 'SergeStinckwich' ancestors ((name 'ArduinoML-DSL-SergeStinckwich.4' message 'First version of ArduinoML for Pharo
-' id '3265c7fa-eb98-54e4-9fab-b576e321f5c9' date '11 July 2015' time '5:35:04 pm' author 'SergeStinckwich' ancestors ((name 'ArduinoML-DSL-SergeStinckwich.3' message 'DSL for states works now
-' id '7b898de6-ae40-5c46-bce5-d937c4f2888b' date '11 July 2015' time '4:35:13 pm' author 'SergeStinckwich' ancestors ((name 'ArduinoML-DSL-SergeStinckwich.2' message 'DSL for bricks works now
-' id '4087d85c-7e0d-5703-ab9b-a3eddfd48f2d' date '11 July 2015' time '3:49:30 pm' author 'SergeStinckwich' ancestors ((name 'ArduinoML-DSL-SergeStinckwich.1' message 'Start to work on DSL
-' id '6639c324-b827-5b52-9d9b-965c178188f7' date '11 July 2015' time '2:57:29 pm' author 'SergeStinckwich' ancestors () stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())) stepChildren ())

@@ -1,17 +1,16 @@
 {
-	"category" : "ArduinoML-DSL",
-	"classinstvars" : [
-		 ],
-	"classvars" : [
-		 ],
 	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "ArduinoML-DSL",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
 	"instvars" : [
 		"appName",
 		"bricks",
 		"states",
-		"transitions" ],
+		"transitions"
+	],
 	"name" : "AMLAppBuilder",
-	"pools" : [
-		 ],
-	"super" : "Object",
-	"type" : "normal" }
+	"type" : "normal"
+}

@@ -1,4 +1,4 @@
-as yet unclassified
+formatting
 formatSetupPinMode: anAMLBrick
 	stream nextPutAll: 'pinMode('.
 	stream nextPutAll: anAMLBrick amlName.
