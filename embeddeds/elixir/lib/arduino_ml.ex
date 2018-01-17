@@ -13,13 +13,13 @@ defmodule ArduinoML do
   alias ArduinoML.Transition, as: Transition
   alias ArduinoML.CodeProducer, as: CodeProducer
 
-  import Kernel, except: [and: 2]
+  import Kernel, except: [and: 2, <: 2, >: 2]
 
   defmacro __using__(_opts) do
     quote do
       import ArduinoML
 
-      import Kernel, except: [and: 2]
+      import Kernel, except: [and: 2, <: 2, >: 2]
     end
   end
 
@@ -36,18 +36,26 @@ defmodule ArduinoML do
   Adds a sensor to the application.
   """
   def sensor([{label, pin}]) do
-    sensor = %Brick{label: label, pin: pin}
+    sensor([{label, pin}, type: :digital])
+  end
+
+  def sensor([{label, pin}, type: type]) when type in [:digital, :analogic] do
+    sensor = %Brick{label: label, pin: pin, type: type}
 
     Agent.update(__MODULE__, fn app -> Application.with_sensor(app, sensor) end)
 
     :ok
   end
-
+  
   @doc """
   Adds an actuator to the application.
   """
   def actuator([{label, pin}]) do
-    actuator = %Brick{label: label, pin: pin}
+    actuator([{label, pin}, type: :digital])
+  end
+
+  def actuator([{label, pin}, type: type]) when type in [:digital, :analogic] do
+    actuator = %Brick{label: label, pin: pin, type: type}
 
     Agent.update(__MODULE__, fn app -> Application.with_actuator(app, actuator) end)
 
@@ -96,16 +104,38 @@ defmodule ArduinoML do
   Builds an action "set the actuator to the given signal".
   """
   def actuator ~> signal do
-    %Action{actuator_label: actuator, signal: signal}
+    %Action{actuator: actuator, signal: signal}
   end
+
+  @doc """
+  Builds an action "set the actuator to the value of the given sensor".
+  """
+  def actuator <~ sensor do
+    %Action{actuator: actuator, signal: sensor}
+  end
+  
 
   @doc """
   Builds an assertion "is the sensor at the given signal?".
   """
   def sensor <~> signal do
-    %Assertion{sensor_label: sensor, signal: signal}
+    %Assertion{sensor: sensor, signal: signal, comparison: :equals}
   end
 
+  @doc """
+  Builds an assertion "is the sensor at lower signal than".
+  """
+  def sensor < signal do
+    %Assertion{sensor: sensor, signal: signal, comparison: :lower_than}
+  end
+
+  @doc """
+  Builds an assertion "is the sensor at greater signal than".
+  """
+  def sensor > signal do
+    %Assertion{sensor: sensor, signal: signal, comparison: :greater_than}
+  end
+  
   @doc """
   Builds an array of assertions from two assertions.
   """

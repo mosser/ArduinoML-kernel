@@ -11,6 +11,9 @@ defmodule ArduinoML.Application do
     transitions: [],
     initial: nil
 
+
+  def state_position(app, state_name), do: app.states |> Enum.find_index(&(&1.label == state_name))
+  
   @doc """
   Adds a sensor to the given application.
 
@@ -107,15 +110,41 @@ defmodule ArduinoML.Application do
   ## Examples
 
     iex> ArduinoML.Application.initial(%ArduinoML.Application{states: [%ArduinoML.State{label: :first}]})
-    :first
+    %ArduinoML.State{label: :first}
 
     iex> ArduinoML.Application.initial(%ArduinoML.Application{initial: :second})
-    :second
+    nil
 
   """
-  def initial(app) when is_map(app) do
+  def initial(application = %{states: states, initial: initial}) do
     # See with_state/2, the first declared state is the last in the list.
-    app.initial || List.last(app.states).label
+    ArduinoML.State.enhanced(initial || List.last(states).label, application)
   end
-  
+
+  @doc """
+  Returns the states with all the bricks references replaced by their structures.
+  Basically, it means that the actuators and signals of the actions are replaced.
+  """
+  def enhanced_states(application) do
+    application.states
+    |> Enum.map(fn state -> ArduinoML.State.enhanced(state, application) end)
+  end
+
+  @doc """
+  Returns the transitions with all the bricks references replaced by their structures.
+  Bascially, it means that the from, to and the sensors and signals of the transitions are replaced.
+  """
+  def enhanced_transitions(application) do
+    application.transitions
+    |> Enum.map(fn transition -> ArduinoML.Transition.enhanced(transition, application) end)
+  end
+
+  def enhanced(application) do
+    %ArduinoML.Application{sensors: application.sensors,
+			   actuators: application.actuators,
+			   states: ArduinoML.Application.enhanced_states(application),
+			   transitions: ArduinoML.Application.enhanced_transitions(application),
+			   initial: ArduinoML.Application.initial(application)}
+  end
+        
 end
