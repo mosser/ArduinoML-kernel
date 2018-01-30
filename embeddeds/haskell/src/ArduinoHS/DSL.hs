@@ -16,6 +16,7 @@ module ArduinoHS.DSL
     buildApp
   -- * state definition
   , initialState
+  , start
   , defineState
   , defineStates
   -- * brick definition
