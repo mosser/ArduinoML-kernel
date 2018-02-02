@@ -13,4 +13,4 @@ transition from: :released, to: :pushed, when: is_high?(:button1) and is_high?(:
 transition from: :pushed, to: :released, when: is_low?(:button1)
 transition from: :pushed, to: :released, when: is_low?(:button2)
 
-finished! save_into: "output.c"
+finished! :show_me

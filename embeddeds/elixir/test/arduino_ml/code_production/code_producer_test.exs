@@ -31,41 +31,34 @@ defmodule ArduinoML.CodeProducerTest do
     }
 
     // Static setup code.
-    int state = LOW;
-    int prev = HIGH;
-    long time = 0;
-    long debounce = 200;
+    int currentState = 1;
 
     // States declarations.
     void state_pressed() {
       digitalWrite(LED, HIGH);
 
-      boolean guard = millis() - time > debounce;
-
-      if (digitalRead(BUTTON) == LOW && guard) {
-        time = millis();
-        state_released();
-      } else {
-        state_pressed();
+      if (digitalRead(BUTTON) == LOW) {
+        currentState = 1;
       }
     }
 
     void state_released() {
       digitalWrite(LED, LOW);
 
-      boolean guard = millis() - time > debounce;
-
-      if (digitalRead(BUTTON) == HIGH && guard) {
-        time = millis();
-        state_pressed();
-      } else {
-        state_released();
+      if (digitalRead(BUTTON) == HIGH) {
+        currentState = 0;
       }
     }
 
     // This function specifies the first state.
     void loop() {
-      state_released();
+      if (currentState == 0) {
+        state_pressed();
+      } else if (currentState == 1) {
+        state_released();
+      } else {
+        /* Not supposed to arrive here. */
+      }
     }
     """
 
