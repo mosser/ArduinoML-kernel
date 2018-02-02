@@ -1,0 +1,19 @@
+package arduinoml
+
+brief = "An implementation of the ArduinoML Kernel in Idris"
+readme = Readme.md
+version = 0.1.0
+
+author = Nicolas Biri <nicolas@biri.name>
+maintainer = Nicolas Biri <nicolas@biri.name>
+
+sourceloc = https://github.com/mosser/ArduinoML-kernel/embeddeds/idris
+bugtracker = https://github.com/mosser/ArduinoML-kernel/issues
+
+sourcedir = src
+
+pkgs = union_type
+
+modules = ArduinoML
+        , ArduinoML.Model
+        , ArduinoML.Wire
