@@ -40,7 +40,7 @@ Right-click on the project name and select `Make` to synchronise the language wi
 
 ### Creating models 
 
-Using these concepts, one can create a program in ArduinoML. Right-click on the _sandobox_ project and create a new `App` (proposed as it is defined as a _root concept_). In MPS, the syntax is made by _projecting_ the AST, and a default project does exists in the tool. 
+Using these concepts, one can create a program in ArduinoML. Right-click on the _sandbox_ project and create a new `App` (proposed as it is defined as a _root concept_). In MPS, the syntax is made by _projecting_ the AST, and a default project does exists in the tool. 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mosser/sec-labs/master/lab_1/figs/mps/3_template.png" />
@@ -85,7 +85,7 @@ Constraints are specified as logical expressions evaluated on concept instances.
 A more interesting constraints is the unique property associated to the state names. To implement it, we add a constraints that looks inside the state parent node and check for other states with the very same name
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/mosser/sec-labs/master/lab_1/figs/mps/7_name.png" />
+  <img src="https://raw.githubusercontent.com/mosser/sec-labs/master/lab_1/figs/mps/7_unique_name.png" />
 </p>
 
 Constraints are _hard_ properties. One can define more _soft_ guidelines. For example, a single initial state should be defined in the FSM. This is done thanks to a _checking rule_ in the type system definition.
