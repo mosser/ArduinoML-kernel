@@ -1,6 +1,6 @@
 # ArduinoML in Xtext with Visual Studio Code Integration
 
-This repository contains both the "traditional" xtext to have a rich editor in eclipse and the artefacts for the generation of VC-Code extensions
+This repository contains both the "traditional" xtext to have a rich editor in eclipse and the artefacts for the generation of VS-Code extensions
 
 ## Quickstart in VS-Code
 
@@ -15,7 +15,11 @@ This will start VS Code and after a few seconds load the `demo` folder of this r
 - start eclipse in a new workspace and import all the `fr.polytech.si5.dsl.arduino*` projects as existing project (import -> project -> general -> existing project in the workspace). Open the xtext file (`fr.polytech.si5.dsl.arduino/src/fr/polytech/si5/dsl/arduino/ArduinoML.xtext`) and then right click -> run as -> generate Xtext artefacts
 - run a new eclipse application, create a project and put a `.aml` file in it... The arduino code will be generated when the aml file is saved.
 
-- optionnaly you can from the first eclipse test the webserver by running the `fr.polytech.si5.dsl.arduino.web/src/fr/polytech/si5/dsl/arduino/web/ServerLauncher.java' and point a web browser to http://localhost:8080.
+- optionnaly you can from the first eclipse test the webserver by running the `fr.polytech.si5.dsl.arduino.web/src/fr/polytech/si5/dsl/arduino/web/ServerLauncher.java` and point a web browser to [http://localhost:8080](http://localhost:8080).
+
+## Quick start in the browser
+
+ Run `./gradlew jettyRun` and point a web browser to [http://localhost:8080](http://localhost:8080).
 
 
 ## Project Structure
