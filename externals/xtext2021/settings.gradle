@@ -1,6 +1,0 @@
-include 'fr.polytech.si5.dsl.arduino'
-include 'fr.polytech.si5.dsl.arduino.ide'
-include 'fr.polytech.si5.dsl.arduino.web'
-include 'fr.polytech.si5.dsl.arduino.tests'
-include 'vscode-extension'
-include 'vscode-extension-self-contained'
