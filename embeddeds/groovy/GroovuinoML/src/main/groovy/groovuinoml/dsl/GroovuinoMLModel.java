@@ -4,15 +4,13 @@ import java.util.*;
 
 import groovy.lang.Binding;
 import io.github.mosser.arduinoml.kernel.App;
-import io.github.mosser.arduinoml.kernel.behavioral.Action;
-import io.github.mosser.arduinoml.kernel.behavioral.Item;
-import io.github.mosser.arduinoml.kernel.behavioral.State;
-import io.github.mosser.arduinoml.kernel.behavioral.Transition;
+import io.github.mosser.arduinoml.kernel.behavioral.*;
+import io.github.mosser.arduinoml.kernel.behavioral.Condition;
+import io.github.mosser.arduinoml.kernel.behavioral.Timer;
 import io.github.mosser.arduinoml.kernel.generator.ToWiring;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
 import io.github.mosser.arduinoml.kernel.structural.Brick;
-import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
 public class GroovuinoMLModel {
@@ -53,11 +51,17 @@ public class GroovuinoMLModel {
 		this.binding.setVariable(name, state);
 	}
 	
-	public void createTransition(State from, State to, List<Item> items) {
+	public void createTransition(State from, State to, List<Condition> conditions) {
 		Transition transition = new Transition();
 		transition.setNext(to);
-		transition.setItem(items);
+		transition.setConditions(conditions);
 		from.addTransition(transition);
+	}
+
+	public void addTimerToState(String name, Timer timer){
+		Optional<State> state = this.states.stream().filter(s->s.getName().equals(name)).findFirst();
+		state.ifPresent(value -> value.setTimer(timer));
+		state.ifPresent(v -> System.out.println(v));
 	}
 	
 	public void setInitialState(State state) {

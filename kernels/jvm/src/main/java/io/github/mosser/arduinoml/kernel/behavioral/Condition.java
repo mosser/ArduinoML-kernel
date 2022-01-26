@@ -5,11 +5,11 @@ import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
-public class Item implements Visitable {
+public class Condition implements Visitable {
     private Sensor sensor;
     private SIGNAL value;
 
-    public Item(Sensor sensor, SIGNAL value) {
+    public Condition(Sensor sensor, SIGNAL value) {
         this.sensor = sensor;
         this.value = value;
     }

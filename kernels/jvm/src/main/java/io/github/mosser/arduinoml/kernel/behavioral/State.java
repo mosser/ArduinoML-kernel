@@ -10,6 +10,7 @@ import java.util.List;
 public class State implements NamedElement, Visitable {
 
 	private String name;
+	private Timer timer;
 	private List<Action> actions = new ArrayList<Action>();
 	private List<Transition> transitions = new ArrayList<Transition>();
 
@@ -41,6 +42,24 @@ public class State implements NamedElement, Visitable {
 
 	public void addTransition(Transition transition){
 		this.transitions.add(transition);
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+
+	@Override
+	public String toString() {
+		return "State{" +
+				"name='" + name + '\'' +
+				", timer=" + timer +
+				", actions=" + actions +
+				", transitions=" + transitions +
+				'}';
 	}
 
 	@Override

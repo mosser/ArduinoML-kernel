@@ -35,6 +35,12 @@ public class ToWiring extends Visitor<StringBuffer> {
 			sep=", ";
 		}
 		w("};\n");
+		for (State state: app.getStates()){
+			System.out.println(state);
+			if (state.getTimer() != null){
+				w(String.format("boolean %sStateTimer=%b;\n", state.getName(), state.getTimer().isActive()));
+			}
+		}
 		if (app.getInitial() != null) {
 			w("STATE currentState = " + app.getInitial().getName()+";\n");
 		}
@@ -96,6 +102,13 @@ public class ToWiring extends Visitor<StringBuffer> {
 			for (Action action : state.getActions()) {
 				action.accept(this);
 			}
+			if(state.getTimer() != null){
+				w(String.format("\t\t\tif(%sStateTimer){\n", state.getName()));
+				w(String.format("\t\t\t\tdelay(%d);\n", state.getTimer().getTime()));
+				w("\t\t\t\tcurrentState = " + state.getTransitions().get(0).getNext().getName() + ";\n");
+				w("\t\t\t\tbreak;\n");
+				w("\t\t\t}\n");
+			}
 			for (Transition transition : state.getTransitions()) {
 				transition.accept(this);
 			}
@@ -113,8 +126,8 @@ public class ToWiring extends Visitor<StringBuffer> {
 		if(context.get("pass") == PASS.TWO) {
 			w("\t\t\tbounceGuard = millis() - lastDebounceTime > debounce;\n");
 			w(String.format("\t\t\tif ( bounceGuard "));
-			for (Item item :transition.getItem()) {
-				item.accept(this);
+			for (Condition condition :transition.getConditions()) {
+				condition.accept(this);
 			}
 			w(") {\n");
 			w("\t\t\t\tlastDebounceTime = millis();\n");
@@ -126,8 +139,8 @@ public class ToWiring extends Visitor<StringBuffer> {
 	}
 
 	@Override
-	public void visit(Item item) {
-		w(String.format("&& (digitalRead(%s) == %s) ", item.getSensor().getPin(), item.getValue()));
+	public void visit(Condition condition) {
+		w(String.format("&& (digitalRead(%s) == %s) ", condition.getSensor().getPin(), condition.getValue()));
 	}
 
 	@Override
