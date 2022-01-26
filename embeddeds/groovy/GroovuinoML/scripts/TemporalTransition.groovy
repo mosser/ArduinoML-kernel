@@ -10,4 +10,4 @@ waitFor 1000 when "on"
 from on to off when button becomes low
 from off to on when button becomes high
 
-export "Scenario5!"
+export "TemporalTransition!"
