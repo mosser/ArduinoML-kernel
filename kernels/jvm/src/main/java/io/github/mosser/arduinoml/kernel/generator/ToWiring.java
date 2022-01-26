@@ -39,10 +39,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 			w("STATE currentState = " + app.getInitial().getName()+";\n");
 		}
 
-		for(Brick brick: app.getBricks()){
-			brick.accept(this);
-		}
-
+//		for(Brick brick: app.getBricks()){
+		if(app.getBricks().size()>0)
+			app.getBricks().get(0).accept(this);
+//		}
 		//second pass, setup and loop
 		context.put("pass",PASS.TWO);
 		w("\nvoid setup(){\n");
@@ -75,8 +75,8 @@ public class ToWiring extends Visitor<StringBuffer> {
 	@Override
 	public void visit(Sensor sensor) {
 		if(context.get("pass") == PASS.ONE) {
-			w(String.format("\nboolean %sBounceGuard = false;\n", sensor.getName()));
-			w(String.format("long %sLastDebounceTime = 0;\n", sensor.getName()));
+			w("boolean bounceGuard = false;\n");
+			w("long lastDebounceTime = 0;\n");
 			return;
 		}
 		if(context.get("pass") == PASS.TWO) {
@@ -96,11 +96,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 			for (Action action : state.getActions()) {
 				action.accept(this);
 			}
-
-			if (state.getTransition() != null) {
-				state.getTransition().accept(this);
-				w("\t\tbreak;\n");
+			for (Transition transition : state.getTransitions()) {
+				transition.accept(this);
 			}
+			w("\t\tbreak;\n");
 			return;
 		}
 
@@ -112,16 +111,23 @@ public class ToWiring extends Visitor<StringBuffer> {
 			return;
 		}
 		if(context.get("pass") == PASS.TWO) {
-			String sensorName = transition.getSensor().getName();
-			w(String.format("\t\t\t%sBounceGuard = millis() - %sLastDebounceTime > debounce;\n",
-					sensorName, sensorName));
-			w(String.format("\t\t\tif( digitalRead(%d) == %s && %sBounceGuard) {\n",
-					transition.getSensor().getPin(), transition.getValue(), sensorName));
-			w(String.format("\t\t\t\t%sLastDebounceTime = millis();\n", sensorName));
+			w("\t\t\tbounceGuard = millis() - lastDebounceTime > debounce;\n");
+			w(String.format("\t\t\tif ( bounceGuard "));
+			for (Item item :transition.getItem()) {
+				item.accept(this);
+			}
+			w(") {\n");
+			w("\t\t\t\tlastDebounceTime = millis();\n");
 			w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
+			w("\t\t\t\tbreak;\n");
 			w("\t\t\t}\n");
 			return;
 		}
+	}
+
+	@Override
+	public void visit(Item item) {
+		w(String.format("&& (digitalRead(%s) == %s) ", item.getSensor().getPin(), item.getValue()));
 	}
 
 	@Override
