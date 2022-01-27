@@ -5,6 +5,7 @@ import java.util.*;
 import groovy.lang.Binding;
 import io.github.mosser.arduinoml.kernel.App;
 import io.github.mosser.arduinoml.kernel.behavioral.*;
+import io.github.mosser.arduinoml.kernel.behavioral.Timer;
 import io.github.mosser.arduinoml.kernel.generator.ToWiring;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
@@ -76,7 +77,7 @@ public class GroovuinoMLModel {
 	public void createExceptionTransition(State from, State to, List<Condition> conditions) {
 		ExceptionTransition exceptionTransition = new ExceptionTransition();
 		exceptionTransition.setNext(to);
-		exceptionTransition.setCondition(conditions);
+		exceptionTransition.setConditions(conditions);
 		from.addTransition(exceptionTransition);
 	}
 

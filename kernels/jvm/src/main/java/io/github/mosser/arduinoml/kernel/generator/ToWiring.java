@@ -147,9 +147,9 @@ public class ToWiring extends Visitor<StringBuffer> {
 		}
 		if(context.get("pass") == PASS.TWO) {
 			w(String.format("\t\t\tif ("));
-			for (int i = 0; i<exceptionTransition.getCondition().size(); i++) {
-				exceptionTransition.getCondition().get(i).accept(this);
-				if(i != exceptionTransition.getCondition().size() - 1){
+			for (int i = 0; i<exceptionTransition.getConditions().size(); i++) {
+				exceptionTransition.getConditions().get(i).accept(this);
+				if(i != exceptionTransition.getConditions().size() - 1){
 					w(" && ");
 				}
 			}
