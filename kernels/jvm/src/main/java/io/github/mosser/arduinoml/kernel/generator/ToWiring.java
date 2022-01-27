@@ -109,6 +109,7 @@ public class ToWiring extends Visitor<StringBuffer> {
 				w("\t\t\t\tbreak;\n");
 				w("\t\t\t}\n");
 			}
+			w("\t\t\tbounceGuard = millis() - lastDebounceTime > debounce;\n");
 			for (Transition transition : state.getTransitions()) {
 				transition.accept(this);
 			}
@@ -124,9 +125,10 @@ public class ToWiring extends Visitor<StringBuffer> {
 			return;
 		}
 		if(context.get("pass") == PASS.TWO) {
-			w("\t\t\tbounceGuard = millis() - lastDebounceTime > debounce;\n");
+
 			w(String.format("\t\t\tif ( bounceGuard "));
 			for (Condition condition :transition.getConditions()) {
+				w("&& ");
 				condition.accept(this);
 			}
 			w(") {\n");
@@ -139,9 +141,93 @@ public class ToWiring extends Visitor<StringBuffer> {
 	}
 
 	@Override
-	public void visit(Condition condition) {
-		w(String.format("&& (digitalRead(%s) == %s) ", condition.getSensor().getPin(), condition.getValue()));
+	public void visit(ExceptionTransition exceptionTransition) {
+		if(context.get("pass") == PASS.ONE) {
+			return;
+		}
+		if(context.get("pass") == PASS.TWO) {
+			w(String.format("\t\t\tif ("));
+			for (int i = 0; i<exceptionTransition.getCondition().size(); i++) {
+				exceptionTransition.getCondition().get(i).accept(this);
+				if(i != exceptionTransition.getCondition().size() - 1){
+					w(" && ");
+				}
+			}
+			w(") {\n");
+			w("\t\t\t\tcurrentState = " + exceptionTransition.getNext().getName() + ";\n");
+			w("\t\t\t\tbreak;\n");
+			w("\t\t\t}\n");
+			return;
+		}
 	}
+
+
+	@Override
+	public void visit(Condition condition) {
+		w(String.format("(digitalRead(%s) == %s) ", condition.getSensor().getPin(), condition.getValue()));
+	}
+
+	@Override
+	public void visit(ExceptionState state){
+		if(context.get("pass") == PASS.ONE) {
+			w(state.getName());
+			return;
+		}
+		if(context.get("pass") == PASS.TWO) {
+			int pin = state.getActuator().getPin();
+			w("\t\tcase " + state.getName() + ":\n");
+			w("\t\t\tint counter = 0;\n");
+			w("\t\t\tint blinkSpeed = 100;\n");
+			w("\t\t\twhile (counter < " + state.getNbBlinking() + ") {\n");
+			w("\t\t\t\tdigitalWrite(" + pin + ", HIGH);\n");
+			w("\t\t\t\tdelay(blinkSpeed);\n");
+			w("\t\t\t\tdigitalWrite(" + pin + ", LOW);\n");
+			w("\t\t\t\tdelay(blinkSpeed);\n");
+			w("\t\t\t\tcounter++;\n");
+			w("\t\t\t}\n");
+			w("\t\t\tdelay(1000);\n");
+			w("\t\tbreak;\n");
+		}
+	}
+
+
+//	@Override
+//	public void visit(ExceptionState state) {
+//		if(context.get("pass") == PASS.ONE){
+//			w(state.getName());
+//			return;
+//		}
+//		if(context.get("pass") == PASS.TWO) {
+//			w("\t\tcase " + state.getName() + ":\n");
+//			for (Action action : state.getActions()) {
+//				action.accept(this);
+//			}
+//			for (Transition transition : state.getTransitions()) {
+//				w("\t\t\tbounceGuard = millis() - lastDebounceTime > debounce;\n");
+//				w(String.format("\t\t\tif ( bounceGuard "));
+//				for (Item item :transition.getItem()) {
+//					item.accept(this);
+//				}
+//				w(") {\n");
+//				w("\t\t\t\tlastDebounceTime = millis();\n");
+//				w("\t\t\t\tcurrentState = " + transition.getNext().getName() + ";\n");
+//				w("\t\t\t\t//error state \n");
+//				w("\t\t\t\tfor (int i = 0; i < "+state.getNbBlinking()+"; ++i) {\n");
+//
+//				w("\t\t\t\t\tdigitalWrite("+state.getActuator().getPin()+", HIGH);\n");
+//				w("\t\t\t\t\tdelay(100);\n");
+//				w("\t\t\t\t\tdigitalWrite("+state.getActuator().getPin()+", LOW);\n");
+//				w("\t\t\t\t\tdelay(100);\n");
+//
+//				w("\t\t\t\t}\n");
+//				w("\t\t\t\tbreak;\n");
+//				w("\t\t\t}\n");
+//				return;
+//			}
+//			w("\t\tbreak;\n");
+//			return;
+//		}
+//	}
 
 	@Override
 	public void visit(Action action) {
