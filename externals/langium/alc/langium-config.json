@@ -1,0 +1,9 @@
+{
+    "languageId": "poly-dsl",
+    "grammar": "src/language-server/poly-dsl.langium",
+    "fileExtensions": [".alc"],
+    "out": "src/language-server/generated",
+    "textMate": {
+        "out": "syntaxes/poly-dsl.tmLanguage.json"
+    }
+}

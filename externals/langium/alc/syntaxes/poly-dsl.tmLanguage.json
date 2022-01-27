@@ -1,0 +1,51 @@
+{
+  "name": "poly-dsl",
+  "scopeName": "source.poly-dsl",
+  "fileTypes": [
+    ".alc"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.poly-dsl",
+      "match": "\\b(Hello|person)\\b"
+    },
+    {
+      "name": "keyword.symbol.poly-dsl",
+      "match": "(\\!)"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.poly-dsl",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.poly-dsl"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.poly-dsl"
+            }
+          }
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.poly-dsl"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.poly-dsl"
+        }
+      ]
+    }
+  }
+}

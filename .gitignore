@@ -7,3 +7,14 @@ embeddeds/haskell/dist
 
 
 .idea/
+
+externals/langium/alc/DS_Store
+externals/langium/alc/vscode-test/
+externals/langium/alc/coverage/
+externals/langium/alc/dist/
+externals/langium/alc/lib/
+externals/langium/alc/out/
+externals/langium/alc/node_modules/
+externals/langium/alc/*.vsix
+externals/langium/alc/*.tsbuildinfo
+externals/langium/alc/examples/*/example/generated
