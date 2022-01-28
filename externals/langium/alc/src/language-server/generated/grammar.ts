@@ -20,112 +20,14 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "$refText": "ML_COMMENT"
     }
   ],
-  "metamodelDeclarations": [],
+  "metamodelDeclarations": [
+    {
+      "$type": "GeneratedMetamodel",
+      "name": "arduinoML",
+      "ePackage": "http://www.polytech.fr/si5/dsl/arduino/ArduinoML"
+    }
+  ],
   "rules": [
-    {
-      "$type": "ParserRule",
-      "parameters": [],
-      "name": "Model",
-      "hiddenTokens": [],
-      "alternatives": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "persons",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "arguments": [],
-              "rule": {
-                "$refText": "Person"
-              }
-            },
-            "elements": []
-          },
-          {
-            "$type": "Assignment",
-            "feature": "greetings",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "arguments": [],
-              "rule": {
-                "$refText": "Greeting"
-              }
-            },
-            "elements": []
-          }
-        ],
-        "cardinality": "*"
-      }
-    },
-    {
-      "$type": "ParserRule",
-      "parameters": [],
-      "name": "Person",
-      "hiddenTokens": [],
-      "alternatives": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "person",
-            "elements": []
-          },
-          {
-            "$type": "Assignment",
-            "feature": "name",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "arguments": [],
-              "rule": {
-                "$refText": "ID"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "$type": "ParserRule",
-      "parameters": [],
-      "name": "Greeting",
-      "hiddenTokens": [],
-      "alternatives": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "Hello",
-            "elements": []
-          },
-          {
-            "$type": "Assignment",
-            "feature": "person",
-            "operator": "=",
-            "terminal": {
-              "$type": "CrossReference",
-              "type": {
-                "$refText": "Person"
-              },
-              "terminal": {
-                "$type": "RuleCall",
-                "arguments": [],
-                "rule": {
-                  "$refText": "ID"
-                }
-              }
-            }
-          },
-          {
-            "$type": "Keyword",
-            "value": "!"
-          }
-        ]
-      }
-    },
     {
       "$type": "TerminalRule",
       "name": "WS",
@@ -156,6 +58,451 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "$type": "TerminalRule",
       "name": "SL_COMMENT",
       "regex": "\\\\/\\\\/[^\\\\n\\\\r]*"
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "App",
+      "hiddenTokens": [],
+      "type": "App",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "app",
+            "elements": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "ID"
+              }
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "initial"
+          },
+          {
+            "$type": "Keyword",
+            "value": "state"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "initial",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "State"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "ID"
+                }
+              }
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Keyword",
+            "value": "bricks"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "bricks",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Brick"
+              }
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "bricks",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Brick"
+              }
+            },
+            "elements": [],
+            "cardinality": "*"
+          },
+          {
+            "$type": "Keyword",
+            "value": "states"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "states",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "State"
+              }
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "states",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "State"
+              }
+            },
+            "elements": [],
+            "cardinality": "*"
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Brick",
+      "hiddenTokens": [],
+      "type": "Brick",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "Actuator"
+                },
+                "elements": []
+              },
+              {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "Sensor"
+                },
+                "elements": []
+              }
+            ]
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "ID"
+              }
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ":"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "pin",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "INT"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Actuator",
+      "hiddenTokens": [],
+      "type": "Actuator",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": "Actuator",
+            "elements": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "actuator"
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Sensor",
+      "hiddenTokens": [],
+      "type": "Sensor",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": "Sensor",
+            "elements": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "sensor"
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "State",
+      "hiddenTokens": [],
+      "type": "State",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "ID"
+              }
+            },
+            "elements": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "{"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "actions",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Action"
+              }
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "actions",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Action"
+              }
+            },
+            "elements": [],
+            "cardinality": "*"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "transition",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Transition"
+              }
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "}"
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Action",
+      "hiddenTokens": [],
+      "type": "Action",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "actuator",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "Actuator"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "ID"
+                }
+              }
+            },
+            "elements": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "<="
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Signal"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Transition",
+      "hiddenTokens": [],
+      "type": "Transition",
+      "alternatives": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "sensor",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "Sensor"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "ID"
+                }
+              }
+            },
+            "elements": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "is"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "Signal"
+              }
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "=>"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "next",
+            "operator": "=",
+            "terminal": {
+              "$type": "CrossReference",
+              "type": {
+                "$refText": "State"
+              },
+              "terminal": {
+                "$type": "RuleCall",
+                "arguments": [],
+                "rule": {
+                  "$refText": "ID"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Signal",
+      "hiddenTokens": [],
+      "type": "Signal",
+      "alternatives": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "HIGH",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "HIGH"
+            },
+            "elements": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "LOW",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "LOW"
+            },
+            "elements": []
+          }
+        ]
+      }
     }
   ],
   "name": "PolyDsl",

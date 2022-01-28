@@ -7,47 +7,107 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { AstNode, AstReflection, Reference, isAstNode } from 'langium';
 
-export interface Greeting extends AstNode {
-    readonly $container: Model;
-    person: Reference<Person>
+export interface Action extends AstNode {
+    readonly $container: State;
+    actuator: Reference<Actuator>
+    value: Signal
 }
 
-export const Greeting = 'Greeting';
+export const Action = 'Action';
 
-export function isGreeting(item: unknown): item is Greeting {
-    return reflection.isInstance(item, Greeting);
+export function isAction(item: unknown): item is Action {
+    return reflection.isInstance(item, Action);
 }
 
-export interface Model extends AstNode {
-    greetings: Array<Greeting>
-    persons: Array<Person>
+export interface Actuator extends AstNode {
 }
 
-export const Model = 'Model';
+export const Actuator = 'Actuator';
 
-export function isModel(item: unknown): item is Model {
-    return reflection.isInstance(item, Model);
+export function isActuator(item: unknown): item is Actuator {
+    return reflection.isInstance(item, Actuator);
 }
 
-export interface Person extends AstNode {
-    readonly $container: Model;
+export interface App extends AstNode {
+    bricks: Array<Brick>
+    initial: Reference<State>
     name: string
+    states: Array<State>
 }
 
-export const Person = 'Person';
+export const App = 'App';
 
-export function isPerson(item: unknown): item is Person {
-    return reflection.isInstance(item, Person);
+export function isApp(item: unknown): item is App {
+    return reflection.isInstance(item, App);
 }
 
-export type PolyDslAstType = 'Greeting' | 'Model' | 'Person';
+export interface Brick extends AstNode {
+    readonly $container: App;
+    name: string
+    pin: number
+}
 
-export type PolyDslAstReference = 'Greeting:person';
+export const Brick = 'Brick';
+
+export function isBrick(item: unknown): item is Brick {
+    return reflection.isInstance(item, Brick);
+}
+
+export interface Sensor extends AstNode {
+}
+
+export const Sensor = 'Sensor';
+
+export function isSensor(item: unknown): item is Sensor {
+    return reflection.isInstance(item, Sensor);
+}
+
+export interface Signal extends AstNode {
+    readonly $container: Action | Transition;
+    HIGH: 'HIGH'
+    LOW: 'LOW'
+}
+
+export const Signal = 'Signal';
+
+export function isSignal(item: unknown): item is Signal {
+    return reflection.isInstance(item, Signal);
+}
+
+export interface State extends AstNode {
+    readonly $container: App;
+    actions: Array<Action>
+    name: string
+    transition: Transition
+}
+
+export const State = 'State';
+
+export function isState(item: unknown): item is State {
+    return reflection.isInstance(item, State);
+}
+
+export interface Transition extends AstNode {
+    readonly $container: State;
+    next: Reference<State>
+    sensor: Reference<Sensor>
+    value: Signal
+}
+
+export const Transition = 'Transition';
+
+export function isTransition(item: unknown): item is Transition {
+    return reflection.isInstance(item, Transition);
+}
+
+export type PolyDslAstType = 'Action' | 'Actuator' | 'App' | 'Brick' | 'Sensor' | 'Signal' | 'State' | 'Transition';
+
+export type PolyDslAstReference = 'Action:actuator' | 'App:initial' | 'Transition:next' | 'Transition:sensor';
 
 export class PolyDslAstReflection implements AstReflection {
 
     getAllTypes(): string[] {
-        return ['Greeting', 'Model', 'Person'];
+        return ['Action', 'Actuator', 'App', 'Brick', 'Sensor', 'Signal', 'State', 'Transition'];
     }
 
     isInstance(node: unknown, type: string): boolean {
@@ -67,8 +127,17 @@ export class PolyDslAstReflection implements AstReflection {
 
     getReferenceType(referenceId: PolyDslAstReference): string {
         switch (referenceId) {
-            case 'Greeting:person': {
-                return Person;
+            case 'Action:actuator': {
+                return Actuator;
+            }
+            case 'App:initial': {
+                return State;
+            }
+            case 'Transition:next': {
+                return State;
+            }
+            case 'Transition:sensor': {
+                return Sensor;
             }
             default: {
                 throw new Error(`${referenceId} is not a valid reference id.`);

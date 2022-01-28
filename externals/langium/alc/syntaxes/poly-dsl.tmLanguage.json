@@ -10,11 +10,11 @@
     },
     {
       "name": "keyword.control.poly-dsl",
-      "match": "\\b(Hello|person)\\b"
+      "match": "\\b(actuator|app|bricks|HIGH|initial|is|LOW|sensor|state|states)\\b"
     },
     {
       "name": "keyword.symbol.poly-dsl",
-      "match": "(\\!)"
+      "match": "(\\:|\\{|\\}|\\<=|\\=>)"
     }
   ],
   "repository": {
