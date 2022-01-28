@@ -12,4 +12,4 @@ from button_off to button_push_once when button becomes high
 from button_push_once to button_push_twice when button becomes high
 from button_push_twice to button_off when button becomes high
 
-export "Scenario4!"
+export "MultiStateAlarm!"

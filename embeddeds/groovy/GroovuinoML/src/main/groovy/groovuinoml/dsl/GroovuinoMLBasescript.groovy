@@ -1,10 +1,8 @@
 package main.groovy.groovuinoml.dsl
 
-import io.github.mosser.arduinoml.kernel.behavioral.Item
-
-import java.util.List;
-
+import io.github.mosser.arduinoml.kernel.behavioral.Condition
 import io.github.mosser.arduinoml.kernel.behavioral.Action
+import io.github.mosser.arduinoml.kernel.behavioral.Timer
 import io.github.mosser.arduinoml.kernel.behavioral.State
 import io.github.mosser.arduinoml.kernel.structural.Actuator
 import io.github.mosser.arduinoml.kernel.structural.Sensor
@@ -44,18 +42,24 @@ abstract class GroovuinoMLBasescript extends Script {
 	def initial(state) {
 		((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state) : (State)state)
 	}
+
+	def waitFor(amount){
+		[when : {String state ->
+			((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().addTimerToState(state, new Timer(true, amount));
+		}]
+	}
 	
 	// from state1 to state2 when sensor becomes signal
 	def from(state1) {
-		def items = [] as List<Item>
+		def conditions = [] as List<Condition>
 
 		def closure
 		closure = { Sensor sensor ->
 			[becomes: { SIGNAL signal ->
-				items.add(new Item(
+				conditions.add(new Condition(
 							sensor instanceof String ? (Sensor)((GroovuinoMLBinding)this.getBinding()).getVariable(sensor) : (Sensor)sensor,
 							signal instanceof String ? (SIGNAL)((GroovuinoMLBinding)this.getBinding()).getVariable(signal) : (SIGNAL)signal
-				         ))
+				))
 				[and: closure]
 			}]
 		}
@@ -63,11 +67,48 @@ abstract class GroovuinoMLBasescript extends Script {
 			((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createTransition(
 					state1 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state1) : (State)state1,
 					state2 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state2) : (State)state2,
-					items)
+					conditions)
+
+			//actualize current state of app
+			((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().updateState(state2 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state2): (State)state2)
+			//((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().setInitialState(state2 instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(state2): (State)state2)
 			[when: closure]
 		}]
 	}
-	
+	def error(nbBlinking){
+
+		def conditions = [] as List<Condition>
+
+		def closure
+		closure = { Sensor sensor ->
+			[becomes: { SIGNAL signal ->
+				conditions.add(new Condition(
+						sensor instanceof String ? (Sensor)((GroovuinoMLBinding)this.getBinding()).getVariable(sensor) : (Sensor)sensor,
+						signal instanceof String ? (SIGNAL)((GroovuinoMLBinding)this.getBinding()).getVariable(signal) : (SIGNAL)signal
+				))
+				[and: closure]
+			}]
+		}
+
+		[on: {Actuator actuator ->
+			def randomNumber =  0
+			String errorStateName = "error_${-> randomNumber}"
+			((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createExceptionState(errorStateName, actuator, nbBlinking)
+
+			//retrieveing all state
+			def states = ((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().getStates() as Set
+
+			def currentState = ((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().getCurrentStateRunning()
+
+			((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().createExceptionTransition(
+					currentState,
+					errorStateName instanceof String ? (State)((GroovuinoMLBinding)this.getBinding()).getVariable(errorStateName) : (State)state2,
+					conditions)
+
+			[when: closure]
+		}]
+	}
+
 	// export name
 	def export(String name) {
 		println(((GroovuinoMLBinding) this.getBinding()).getGroovuinoMLModel().generateCode(name).toString())

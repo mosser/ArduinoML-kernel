@@ -4,23 +4,21 @@ import java.util.*;
 
 import groovy.lang.Binding;
 import io.github.mosser.arduinoml.kernel.App;
-import io.github.mosser.arduinoml.kernel.behavioral.Action;
-import io.github.mosser.arduinoml.kernel.behavioral.Item;
-import io.github.mosser.arduinoml.kernel.behavioral.State;
-import io.github.mosser.arduinoml.kernel.behavioral.Transition;
+import io.github.mosser.arduinoml.kernel.behavioral.*;
+import io.github.mosser.arduinoml.kernel.behavioral.Timer;
 import io.github.mosser.arduinoml.kernel.generator.ToWiring;
 import io.github.mosser.arduinoml.kernel.generator.Visitor;
 import io.github.mosser.arduinoml.kernel.structural.Actuator;
 import io.github.mosser.arduinoml.kernel.structural.Brick;
-import io.github.mosser.arduinoml.kernel.structural.SIGNAL;
 import io.github.mosser.arduinoml.kernel.structural.Sensor;
 
 public class GroovuinoMLModel {
 	private List<Brick> bricks;
 	private List<State> states;
 	private State initialState;
-	
 	private Binding binding;
+
+	private State currentStateRunning;
 	
 	public GroovuinoMLModel(Binding binding) {
 		this.bricks = new ArrayList<Brick>();
@@ -52,14 +50,53 @@ public class GroovuinoMLModel {
 		this.states.add(state);
 		this.binding.setVariable(name, state);
 	}
-	
-	public void createTransition(State from, State to, List<Item> items) {
-		Transition transition = new Transition();
-		transition.setNext(to);
-		transition.setItem(items);
-		from.addTransition(transition);
+
+	public void createExceptionState(String name, Actuator actuator, int blinkingTimes){
+		ExceptionState exceptionState = new ExceptionState();
+		exceptionState.setName(name);
+		exceptionState.setActuator(actuator);
+		exceptionState.setNbBlinking(blinkingTimes);
+		this.states.add(exceptionState);
+		this.binding.setVariable(name, exceptionState);
 	}
 	
+	public void createTransition(State from, State to, List<Condition> conditions) {
+		Transition transition = new Transition();
+		transition.setNext(to);
+		transition.setConditions(conditions);
+		from.addTransition(transition);
+	}
+
+	public void addTimerToState(String name, Timer timer){
+		Optional<State> state = this.states.stream().filter(s->s.getName().equals(name)).findFirst();
+		state.ifPresent(value -> value.setTimer(timer));
+		state.ifPresent(v -> System.out.println(v));
+	}
+	
+
+	public void createExceptionTransition(State from, State to, List<Condition> conditions) {
+		ExceptionTransition exceptionTransition = new ExceptionTransition();
+		exceptionTransition.setNext(to);
+		exceptionTransition.setConditions(conditions);
+		from.addTransition(exceptionTransition);
+	}
+
+	public void updateState(State currentStateRunning) {
+		this.currentStateRunning = currentStateRunning;
+	}
+
+	public State getCurrentStateRunning() {
+		return currentStateRunning;
+	}
+
+	public List<State> getStates() {
+		return states;
+	}
+
+	public State getInitialState() {
+		return initialState;
+	}
+
 	public void setInitialState(State state) {
 		this.initialState = state;
 	}
