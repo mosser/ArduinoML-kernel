@@ -20,51 +20,13 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "$refText": "ML_COMMENT"
     }
   ],
-  "metamodelDeclarations": [
-    {
-      "$type": "GeneratedMetamodel",
-      "name": "arduinoML",
-      "ePackage": "http://www.polytech.fr/si5/dsl/arduino/ArduinoML"
-    }
-  ],
+  "metamodelDeclarations": [],
   "rules": [
-    {
-      "$type": "TerminalRule",
-      "name": "WS",
-      "regex": "\\\\s+"
-    },
-    {
-      "$type": "TerminalRule",
-      "name": "ID",
-      "regex": "[_a-zA-Z][\\\\w_]*"
-    },
-    {
-      "$type": "TerminalRule",
-      "name": "INT",
-      "type": "number",
-      "regex": "[0-9]+"
-    },
-    {
-      "$type": "TerminalRule",
-      "name": "STRING",
-      "regex": "\\"[^\\"]*\\"|'[^']*'"
-    },
-    {
-      "$type": "TerminalRule",
-      "name": "ML_COMMENT",
-      "regex": "\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/"
-    },
-    {
-      "$type": "TerminalRule",
-      "name": "SL_COMMENT",
-      "regex": "\\\\/\\\\/[^\\\\n\\\\r]*"
-    },
     {
       "$type": "ParserRule",
       "parameters": [],
       "name": "App",
       "hiddenTokens": [],
-      "type": "App",
       "alternatives": {
         "$type": "Group",
         "elements": [
@@ -187,30 +149,40 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "parameters": [],
       "name": "Brick",
       "hiddenTokens": [],
-      "type": "Brick",
+      "alternatives": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "arguments": [],
+            "rule": {
+              "$refText": "Actuator"
+            },
+            "elements": []
+          },
+          {
+            "$type": "RuleCall",
+            "arguments": [],
+            "rule": {
+              "$refText": "Sensor"
+            },
+            "elements": []
+          }
+        ]
+      }
+    },
+    {
+      "$type": "ParserRule",
+      "parameters": [],
+      "name": "Actuator",
+      "hiddenTokens": [],
       "alternatives": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "arguments": [],
-                "rule": {
-                  "$refText": "Actuator"
-                },
-                "elements": []
-              },
-              {
-                "$type": "RuleCall",
-                "arguments": [],
-                "rule": {
-                  "$refText": "Sensor"
-                },
-                "elements": []
-              }
-            ]
+            "$type": "Keyword",
+            "value": "actuator",
+            "elements": []
           },
           {
             "$type": "Assignment",
@@ -246,41 +218,43 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
     {
       "$type": "ParserRule",
       "parameters": [],
-      "name": "Actuator",
-      "hiddenTokens": [],
-      "type": "Actuator",
-      "alternatives": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Action",
-            "type": "Actuator",
-            "elements": []
-          },
-          {
-            "$type": "Keyword",
-            "value": "actuator"
-          }
-        ]
-      }
-    },
-    {
-      "$type": "ParserRule",
-      "parameters": [],
       "name": "Sensor",
       "hiddenTokens": [],
-      "type": "Sensor",
       "alternatives": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "Action",
-            "type": "Sensor",
+            "$type": "Keyword",
+            "value": "sensor",
             "elements": []
           },
           {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "ID"
+              }
+            }
+          },
+          {
             "$type": "Keyword",
-            "value": "sensor"
+            "value": ":"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "pin",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "arguments": [],
+              "rule": {
+                "$refText": "INT"
+              }
+            }
           }
         ]
       }
@@ -290,7 +264,6 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "parameters": [],
       "name": "State",
       "hiddenTokens": [],
-      "type": "State",
       "alternatives": {
         "$type": "Group",
         "elements": [
@@ -361,7 +334,6 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "parameters": [],
       "name": "Action",
       "hiddenTokens": [],
-      "type": "Action",
       "alternatives": {
         "$type": "Group",
         "elements": [
@@ -408,7 +380,6 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "parameters": [],
       "name": "Transition",
       "hiddenTokens": [],
-      "type": "Transition",
       "alternatives": {
         "$type": "Group",
         "elements": [
@@ -477,7 +448,6 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
       "parameters": [],
       "name": "Signal",
       "hiddenTokens": [],
-      "type": "Signal",
       "alternatives": {
         "$type": "Alternatives",
         "elements": [
@@ -503,6 +473,37 @@ export const grammar = (): Grammar => loaded || (loaded = loadGrammar(`{
           }
         ]
       }
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "WS",
+      "regex": "\\\\s+"
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "ID",
+      "regex": "[_a-zA-Z][\\\\w_]*"
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "INT",
+      "type": "number",
+      "regex": "[0-9]+"
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "STRING",
+      "regex": "\\"[^\\"]*\\"|'[^']*'"
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "ML_COMMENT",
+      "regex": "\\\\/\\\\*[\\\\s\\\\S]*?\\\\*\\\\/"
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "SL_COMMENT",
+      "regex": "\\\\/\\\\/[^\\\\n\\\\r]*"
     }
   ],
   "name": "PolyDsl",

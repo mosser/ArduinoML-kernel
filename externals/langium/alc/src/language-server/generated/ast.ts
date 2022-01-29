@@ -19,15 +19,6 @@ export function isAction(item: unknown): item is Action {
     return reflection.isInstance(item, Action);
 }
 
-export interface Actuator extends AstNode {
-}
-
-export const Actuator = 'Actuator';
-
-export function isActuator(item: unknown): item is Actuator {
-    return reflection.isInstance(item, Actuator);
-}
-
 export interface App extends AstNode {
     bricks: Array<Brick>
     initial: Reference<State>
@@ -51,15 +42,6 @@ export const Brick = 'Brick';
 
 export function isBrick(item: unknown): item is Brick {
     return reflection.isInstance(item, Brick);
-}
-
-export interface Sensor extends AstNode {
-}
-
-export const Sensor = 'Sensor';
-
-export function isSensor(item: unknown): item is Sensor {
-    return reflection.isInstance(item, Sensor);
 }
 
 export interface Signal extends AstNode {
@@ -100,14 +82,32 @@ export function isTransition(item: unknown): item is Transition {
     return reflection.isInstance(item, Transition);
 }
 
-export type PolyDslAstType = 'Action' | 'Actuator' | 'App' | 'Brick' | 'Sensor' | 'Signal' | 'State' | 'Transition';
+export interface Actuator extends Brick {
+}
+
+export const Actuator = 'Actuator';
+
+export function isActuator(item: unknown): item is Actuator {
+    return reflection.isInstance(item, Actuator);
+}
+
+export interface Sensor extends Brick {
+}
+
+export const Sensor = 'Sensor';
+
+export function isSensor(item: unknown): item is Sensor {
+    return reflection.isInstance(item, Sensor);
+}
+
+export type PolyDslAstType = 'Action' | 'App' | 'Brick' | 'Signal' | 'State' | 'Transition' | 'Actuator' | 'Sensor';
 
 export type PolyDslAstReference = 'Action:actuator' | 'App:initial' | 'Transition:next' | 'Transition:sensor';
 
 export class PolyDslAstReflection implements AstReflection {
 
     getAllTypes(): string[] {
-        return ['Action', 'Actuator', 'App', 'Brick', 'Sensor', 'Signal', 'State', 'Transition'];
+        return ['Action', 'App', 'Brick', 'Signal', 'State', 'Transition', 'Actuator', 'Sensor'];
     }
 
     isInstance(node: unknown, type: string): boolean {
@@ -119,6 +119,10 @@ export class PolyDslAstReflection implements AstReflection {
             return true;
         }
         switch (subtype) {
+            case Actuator:
+            case Sensor: {
+                return this.isSubtype(Brick, supertype);
+            }
             default: {
                 return false;
             }

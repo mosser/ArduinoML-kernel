@@ -1,5 +1,5 @@
 import { ValidationAcceptor, ValidationCheck, ValidationRegistry } from 'langium';
-import { PolyDslAstType, Person } from './generated/ast';
+import { PolyDslAstType, App } from './generated/ast';
 import { PolyDslServices } from './poly-dsl-module';
 
 /**
@@ -15,7 +15,7 @@ export class PolyDslValidationRegistry extends ValidationRegistry {
         super(services);
         const validator = services.validation.PolyDslValidator;
         const checks: PolyDslChecks = {
-            Person: validator.checkPersonStartsWithCapital
+            App: validator.checkPersonStartsWithCapital
         };
         this.register(checks, validator);
     }
@@ -26,13 +26,13 @@ export class PolyDslValidationRegistry extends ValidationRegistry {
  */
 export class PolyDslValidator {
 
-    checkPersonStartsWithCapital(person: Person, accept: ValidationAcceptor): void {
-        if (person.name) {
-            const firstChar = person.name.substring(0, 1);
-            if (firstChar.toUpperCase() !== firstChar) {
-                accept('warning', 'Person name should start with a capital.', { node: person, property: 'name' });
-            }
-        }
+    checkPersonStartsWithCapital(app: App, accept: ValidationAcceptor): void {
+        // if (person.name) {
+        //     const firstChar = person.name.substring(0, 1);
+        //     if (firstChar.toUpperCase() !== firstChar) {
+        //         accept('warning', 'Person name should start with a capital.', { node: person, property: 'name' });
+        //     }
+        // }
     }
 
 }
