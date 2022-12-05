@@ -5,3 +5,5 @@ GroovuinoML/.settings
 GroovuinoML/.classpath
 GroovuinoML/.project
 target
+.gradle
+build

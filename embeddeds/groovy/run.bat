@@ -1,0 +1,1 @@
+java -jar target\dsl-groovy-all.jar scripts\Switch.groovy > result.ino
