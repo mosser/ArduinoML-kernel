@@ -1,0 +1,22 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'groovy'
+    id 'java'
+}
+
+archivesBaseName = 'dsl-groovy'
+configurations { provided; inlib }
+repositories { mavenCentral(); mavenLocal() }
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.6'
+    shadow 'org.apache.groovy:groovy:4.0.6'
+    implementation 'io.github.mosser.arduinoml:kernel-jvm:1.0'
+    shadow 'io.github.mosser.arduinoml:kernel-jvm:1.0'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'GroovuinoML'
+    }
+}

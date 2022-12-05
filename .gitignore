@@ -2,6 +2,5 @@ embeddeds/haskell/dist
 
 # Python
 *.py[cod]
-
-
-
+.DS_Store
+.idea
