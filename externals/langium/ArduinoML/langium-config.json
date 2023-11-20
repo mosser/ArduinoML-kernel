@@ -1,0 +1,12 @@
+{
+    "projectName": "ArduinoMl",
+    "languages": [{
+        "id": "arduino-ml",
+        "grammar": "src/language-server/arduino-ml.langium",
+        "fileExtensions": [".aml"],
+        "textMate": {
+            "out": "syntaxes/arduino-ml.tmLanguage.json"
+        }
+    }],
+    "out": "src/language-server/generated"
+}

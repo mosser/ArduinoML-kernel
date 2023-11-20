@@ -1,0 +1,57 @@
+{
+  "name": "arduino-ml",
+  "scopeName": "source.arduino-ml",
+  "fileTypes": [
+    ".aml"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.arduino-ml",
+      "match": "\\b(Actuator|app|bricks|initial|is|Sensor|state|states)\\b"
+    },
+    {
+      "name": "string.quoted.double.arduino-ml",
+      "begin": "\"",
+      "end": "\""
+    },
+    {
+      "name": "string.quoted.single.arduino-ml",
+      "begin": "'",
+      "end": "'"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.arduino-ml",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.arduino-ml"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.arduino-ml"
+            }
+          }
+        },
+        {
+          "begin": "//",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.arduino-ml"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.arduino-ml"
+        }
+      ]
+    }
+  }
+}

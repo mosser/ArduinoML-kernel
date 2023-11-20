@@ -46,6 +46,8 @@ For example, let’s consider the following scenario: _“As a user, considering
     * Scheme
   * [Antoine Aubé](https://github.com/AntoineAube)
     * Elixir
+  * [Julien Deantoni](https://webusers.i3s.unice.fr/~deantoni/)
+    * Langium, Xtext v2
 ## References
 
   * [2014] Sébastien Mosser, Philippe Collet, Mireille Blay-Fornarino. _“Exploiting the Internet of Things to Teach Domain-Specific Languages and Modeling”_ in Proceedings of the 10th Educators' Symposium @ MODELS 2014 (EduSymp'14), ACM, IEEE, pages 1-10, Springer LNCS, Valencia, Spain, 29 september 2014
