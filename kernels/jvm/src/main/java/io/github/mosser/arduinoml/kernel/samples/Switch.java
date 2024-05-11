@@ -42,12 +42,12 @@ public class Switch {
 		off.setActions(Arrays.asList(switchTheLightOff));
 
 		// Creating transitions
-		Transition on2off = new Transition();
+		SignalTransition on2off = new SignalTransition();
 		on2off.setNext(off);
 		on2off.setSensor(button);
 		on2off.setValue(SIGNAL.HIGH);
 
-		Transition off2on = new Transition();
+		SignalTransition off2on = new SignalTransition();
 		off2on.setNext(on);
 		off2on.setSensor(button);
 		off2on.setValue(SIGNAL.HIGH);
